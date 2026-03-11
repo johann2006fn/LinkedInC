@@ -1,0 +1,134 @@
+{
+  "project_info": {
+    "project_number": "1425969683",
+    "project_id": "mentorhub-82a2b",
+    "storage_bucket": "mentorhub-82a2b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1425969683:android:cb6ed507ff4d43971b25e6",
+        "android_client_info": {
+          "package_name": "com.example.demo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1425969683-gd3n49eo85qksqme29h1ov6olir28hfc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.demo",
+            "certificate_hash": "283596464f8f8365fded1fda0b501297207b44d1"
+          }
+        },
+        {
+          "client_id": "1425969683-cj47d0nu227gql7ju1gb9q97vm830a1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjlaJYMKRSal51X5zwMbs-IcHpypZPlco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1425969683-cj47d0nu227gql7ju1gb9q97vm830a1n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1425969683-3qcterp0so1v4mb9qbl7ghputifj67ev.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.linkedinMobileUi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1425969683:android:24312e20fb82aaab1b25e6",
+        "android_client_info": {
+          "package_name": "com.example.linkedin_mobile_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1425969683-cj47d0nu227gql7ju1gb9q97vm830a1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjlaJYMKRSal51X5zwMbs-IcHpypZPlco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1425969683-cj47d0nu227gql7ju1gb9q97vm830a1n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1425969683-3qcterp0so1v4mb9qbl7ghputifj67ev.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.linkedinMobileUi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1425969683:android:6c696393d2e06f871b25e6",
+        "android_client_info": {
+          "package_name": "com.example.mentorship_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1425969683-l384ulrtd0it5bjv3u5ecpmdfdls1hf7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mentorship_app",
+            "certificate_hash": "283596464f8f8365fded1fda0b501297207b44d1"
+          }
+        },
+        {
+          "client_id": "1425969683-cj47d0nu227gql7ju1gb9q97vm830a1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjlaJYMKRSal51X5zwMbs-IcHpypZPlco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1425969683-cj47d0nu227gql7ju1gb9q97vm830a1n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1425969683-3qcterp0so1v4mb9qbl7ghputifj67ev.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.linkedinMobileUi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

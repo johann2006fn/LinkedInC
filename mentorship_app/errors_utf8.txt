@@ -1,0 +1,134 @@
+﻿
+  error - The name 'Chat' 
+isn't a type, so it can't 
+be used in an 'as' 
+expression - lib\router\ap
+p_router.dart:91:37 - 
+cast_to_non_type
+  error - The getter 
+'uid' isn't defined for 
+the type 'AppUser' - lib\s
+creens\chat_detail_screen.
+dart:35:69 - 
+undefined_getter
+  error - The getter 
+'uid' isn't defined for 
+the type 'AppUser' - lib\s
+creens\chat_detail_screen.
+dart:263:55 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\mentor_detail_s
+creen.dart:143:56 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\mentor_detail_s
+creen.dart:143:90 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\mentor_detail_s
+creen.dart:144:58 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\mentor_detail_s
+creen.dart:146:46 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\mentor_detail_s
+creen.dart:146:80 - 
+undefined_getter
+  error - The getter 
+'title' isn't defined for 
+the type 'AppUser' - lib\s
+creens\mentor_detail_scree
+n.dart:191:64 - 
+undefined_getter
+  error - Expected to 
+find '}' - lib\screens\men
+tor_detail_screen.dart:271
+:1 - expected_token
+  error - The getter 
+'displayName' isn't 
+defined for the type 
+'AppUser' - lib\screens\se
+arch_mentors_screen.dart:1
+58:29 - undefined_getter
+  error - The getter 
+'title' isn't defined for 
+the type 'AppUser' - lib\s
+creens\search_mentors_scre
+en.dart:158:46 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\search_mentors_
+screen.dart:202:39 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\search_mentors_
+screen.dart:202:66 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\search_mentors_
+screen.dart:203:41 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\search_mentors_
+screen.dart:205:29 - 
+undefined_getter
+  error - The getter 
+'photoUrl' isn't defined 
+for the type 'AppUser' - l
+ib\screens\search_mentors_
+screen.dart:205:56 - 
+undefined_getter
+  error - The getter 
+'displayName' isn't 
+defined for the type 
+'AppUser' - lib\screens\se
+arch_mentors_screen.dart:2
+07:30 - undefined_getter
+  error - The getter 
+'displayName' isn't 
+defined for the type 
+'AppUser' - lib\screens\se
+arch_mentors_screen.dart:2
+07:62 - undefined_getter
+  error - The getter 
+'displayName' isn't 
+defined for the type 
+'AppUser' - lib\screens\se
+arch_mentors_screen.dart:2
+18:28 - undefined_getter
+  error - The getter 
+'title' isn't defined for 
+the type 'AppUser' - lib\s
+creens\search_mentors_scre
+en.dart:223:28 - 
+undefined_getter
+  error - The setter 'onCa
+meraTurnOnConfirmation' 
+isn't defined for the 
+type 'ZegoUIKitPrebuiltCal
+lConfig' - lib\screens\vid
+eo_call_screen.dart:59:15 
+- undefined_setter
+
+

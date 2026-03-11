@@ -1,0 +1,59 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: any authenticated user can read profiles; users can only write to their own UID
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Connections: users can read/write if they are the mentor or the student/mentee
+    match /connections/{connectionId} {
+      allow read, write: if request.auth != null && (
+        request.auth.uid == resource.data.mentorId || 
+        request.auth.uid == resource.data.studentId
+      );
+      allow create: if request.auth != null && (
+        request.auth.uid == request.resource.data.mentorId || 
+        request.auth.uid == request.resource.data.studentId
+      );
+    }
+
+    // Chats: only participants can read/write
+    match /chats/{chatId} {
+      allow read, write: if request.auth != null &&
+        request.auth.uid in resource.data.participantIds;
+      allow create: if request.auth != null;
+
+      // Messages subcollection
+      match /messages/{messageId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // Sessions: read if participant
+    match /sessions/{sessionId} {
+      allow read, write: if request.auth != null && (
+        request.auth.uid == resource.data.mentorId || 
+        request.auth.uid == resource.data.studentId
+      );
+      allow create: if request.auth != null;
+    }
+
+    // Community Posts: any logged-in user can read; any logged-in user can create
+    match /community_posts/{postId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update: if request.auth != null && request.auth.uid == resource.data.authorId;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.authorId;
+    }
+
+    // Colleges: allow read for anyone (required for college code gate)
+    match /colleges/{collegeId} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
