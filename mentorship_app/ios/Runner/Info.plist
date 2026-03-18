@@ -12,8 +12,10 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleDisplayName</key>
+	<string>MentorHUB</string>
 	<key>CFBundleName</key>
-	<string>mentorship_app</string>
+	<string>MentorHUB</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,5 +47,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>The Mentorship App requires camera access for video conferencing during mentorship sessions.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The Mentorship App requires microphone access for audio during mentorship sessions.</string>
 </dict>
 </plist>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Specification | MentorHub Core Topology</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        @page { size: A4 portrait; margin: 0; }
+        :root {
+            --primary: #0F172A;
+            --accent: #2563EB;
+            --border: #CBD5E1;
+            --canvas-bg: #FFFFFF;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #F8FAFC;
+            color: var(--primary);
+        }
+        .page {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            background: white;
+            padding: 8mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 16pt;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .header p {
+            margin: 1px 0 0 0;
+            font-size: 8pt;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .meta {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 7.5pt;
+            color: #64748B;
+        }
+        .canvas {
+            flex-grow: 1;
+            background: var(--canvas-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-image: 
+                linear-gradient(var(--border) 0.5px, transparent 0.5px),
+                linear-gradient(90deg, var(--border) 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            background-position: center;
+        }
+        .mermaid {
+            width: 100%;
+            height: 100%;
+        }
+        .info-grid {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            padding: 10px;
+            background: #F1F5F9;
+            border: 1px solid var(--border);
+        }
+        .info-item h3 {
+            margin: 0 0 3px 0;
+            font-size: 8pt;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .info-item p {
+            margin: 0;
+            font-size: 7pt;
+            color: #475569;
+            line-height: 1.25;
+        }
+        .footer {
+            margin-top: 8px;
+            padding-top: 6px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-size: 6.5pt;
+            font-family: 'JetBrains Mono', monospace;
+            color: #94A3B8;
+        }
+        .print-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            z-index: 100;
+            border-radius: 4px;
+        }
+        @media print {
+            body { background: white; }
+            .page { margin: 0; width: 100%; height: 100vh; }
+            .print-btn { display: none; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#FFFFFF',
+                primaryTextColor: '#0F172A',
+                primaryBorderColor: '#0F172A',
+                lineColor: '#64748B',
+                secondaryColor: '#F8FAFC',
+                tertiaryColor: '#FFFFFF',
+                fontFamily: 'Inter',
+                fontSize: '11px'
+            },
+            flowchart: {
+                htmlLabels: true,
+                curve: 'linear',
+                rankSpacing: 80,
+                nodeSpacing: 35,
+                padding: 10
+            }
+        });
+    </script>
+</head>
+<body>
+    <button class="print-btn" onclick="window.print()">GENERATE PDF</button>
+
+    <div class="page">
+        <div class="header">
+            <div>
+                <h1>Architecture Map</h1>
+                <p>MENTORHUB ECOSYSTEM // HIGH-DENSITY SCHEMATIC</p>
+            </div>
+            <div class="meta">
+                ID: MH-2026-01<br/>
+                REV: V2.1.0<br/>
+                TS: 2026_03_15
+            </div>
+        </div>
+
+        <div class="canvas">
+            <div class="mermaid">
+graph LR
+    %% Inputs
+    Router["GoRouter"]
+
+    %% PRESENTATION
+    subgraph PRESENTATION ["<b>PRESENTATION</b>"]
+        direction TB
+        subgraph WIDGETS ["<b>WIDGETS</b>"]
+            direction TB
+            NSH["NotificationSheet"]
+            JSB["JoinSessionButton"]
+            UAV["UserAvatar"]
+        end
+        subgraph SCREENS ["<b>SCREENS</b>"]
+            direction TB
+            MCS["MentorCalendarScreen"]
+            MPS["MentorProfileScreen"]
+            CLS["ChatListScreen"]
+            CS["ChatScreen"]
+            DS["DiscoveryScreen"]
+        end
+    end
+
+    %% SERVICES
+    subgraph SERVICES ["<b>SERVICES</b>"]
+        direction TB
+        PNS["PushNotificationService"]
+        VCS["VideoCallService"]
+    end
+
+    %% PROVIDERS
+    subgraph PROVIDERS ["<b>PROVIDERS</b>"]
+        direction TB
+        UCP["UserCacheProvider"]
+        SP["sessionProvider"]
+        UChP["userChatsProvider"]
+    end
+
+    %% LOGIC
+    subgraph REPOSITORIES ["<b>REPOSITORIES</b>"]
+        direction TB
+        UR["UserRepository"]
+        CR["ChatRepository"]
+    end
+
+    subgraph MODELS ["<b>MODELS</b>"]
+        direction TB
+        AU["AppUser"]
+        MSG["Message"]
+        CH["Chat"]
+    end
+
+    %% INFRA
+    FA["Firebase Auth"]
+    FCM["FCM"]
+    JM["Jitsi Meet"]
+    FS[("Firestore")]
+    Fast["FastAPI"]
+    Gem["Gemini API"]
+
+    %% CONNECTIONS
+    Router --> PRESENTATION
+
+    %% Widgets to Services
+    NSH --> PNS
+    JSB --> VCS
+
+    %% Screens to Providers
+    MCS --> SP
+    MPS --> UCP
+    CLS --> UChP
+    CS -- "propose session" --> CR
+    CS -- "send message" --> CR
+    DS -- "advanced search" --> Fast
+
+    %% Providers to Repos / UI
+    UCP --> UR
+    SP --> CR
+    UChP -- "UI reactivity" --> PRESENTATION
+    UChP --> CR
+
+    %% Repos to Models / DB
+    UR --> AU
+    CR --> MSG
+    CR --> CH
+    UR -- "user data" --> FS
+    CR -- "chat data" --> FS
+
+    %% Infrastructure Flows
+    PRESENTATION -- "sign-in" --> FA
+    FA -- "auth profile sync" --> FS
+    PNS -- "send push" --> FCM
+    VCS -- "start call" --> JM
+    Fast -- "semantic query" --> Gem
+    Gem -- "sync profiles" --> FS
+
+    %% Styling
+    classDef main fill:#FFFFFF,stroke:#2563EB,stroke-width:2px;
+    classDef sub fill:#F8FAFC,stroke:#64748B,stroke-width:1px;
+    classDef node fill:#FFFFFF,stroke:#94A3B8,color:#0F172A;
+    classDef cloud fill:#FFFFFF,stroke:#0F172A,stroke-dasharray: 5 5;
+    
+    class PRESENTATION,SERVICES,PROVIDERS,REPOSITORIES,MODELS main;
+    class WIDGETS,SCREENS sub;
+    class NSH,JSB,UAV,MCS,MPS,CLS,CS,DS,PNS,VCS,UCP,SP,UChP,UR,CR,AU,MSG,CH node;
+    class FA,FCM,JM,FS,Fast,Gem cloud;
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <h3>Architecture</h3>
+                <p>Layered Flutter architecture employing Repository pattern and Riverpod state management.</p>
+            </div>
+            <div class="info-item">
+                <h3>Infra</h3>
+                <p>Firebase (Auth, Firestore, FCM) with FastAPI bridge for AI computation.</p>
+            </div>
+            <div class="info-item">
+                <h3>AI Discovery</h3>
+                <p>Gemini API semantic matchmaking via the FastAPI middleware.</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <span>MENTORHUB TECHNICAL SPEC // INTERNAL USE ONLY</span>
+            <span>REV: 2.1.0-A</span>
+            <span>PAGE 01 / 01</span>
+        </div>
+    </div>
+</body>
+</html>

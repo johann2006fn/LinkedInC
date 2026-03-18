@@ -12,7 +12,8 @@ class MainScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(currentUserProvider);
-    final isMentor = userAsync.whenOrNull(data: (u) => u?.role == 'mentor') ?? false;
+    final isMentor =
+        userAsync.whenOrNull(data: (u) => u?.role == 'mentor') ?? false;
     final location = GoRouterState.of(context).uri.path;
 
     return Scaffold(
@@ -51,7 +52,10 @@ class MainScreen extends ConsumerWidget {
       // Mentee: 0=Explore, 1=Chat, 2=Network, 3=Profile
       if (location == '/') return 0;
       if (location.startsWith('/chat')) return 1;
-      if (location.startsWith('/network') || location.startsWith('/mentee-network')) return 2;
+      if (location.startsWith('/network') ||
+          location.startsWith('/mentee-network')) {
+        return 2;
+      }
       if (location.startsWith('/profile')) return 3;
       return 0;
     }
@@ -61,17 +65,33 @@ class MainScreen extends ConsumerWidget {
   void _onTap(int index, BuildContext context, bool isMentor) {
     if (isMentor) {
       switch (index) {
-        case 0: context.go('/mentor'); break;
-        case 1: context.go('/chat'); break;
-        case 2: context.go('/calendar'); break;
-        case 3: context.go('/profile'); break;
+        case 0:
+          context.go('/mentor');
+          break;
+        case 1:
+          context.go('/chat');
+          break;
+        case 2:
+          context.go('/calendar');
+          break;
+        case 3:
+          context.go('/profile');
+          break;
       }
     } else {
       switch (index) {
-        case 0: context.go('/'); break;
-        case 1: context.go('/chat'); break;
-        case 2: context.go('/network'); break;
-        case 3: context.go('/profile'); break;
+        case 0:
+          context.go('/');
+          break;
+        case 1:
+          context.go('/chat');
+          break;
+        case 2:
+          context.go('/network');
+          break;
+        case 3:
+          context.go('/profile');
+          break;
       }
     }
   }

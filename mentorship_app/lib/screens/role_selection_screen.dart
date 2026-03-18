@@ -4,9 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../theme/antigravity_theme.dart';
 import '../widgets/glass_container.dart';
+import '../services/auth_service.dart';
 
 class RoleSelectionScreen extends StatefulWidget {
-  const RoleSelectionScreen({Key? key}) : super(key: key);
+  const RoleSelectionScreen({super.key});
 
   @override
   State<RoleSelectionScreen> createState() => _RoleSelectionScreenState();
@@ -15,7 +16,15 @@ class RoleSelectionScreen extends StatefulWidget {
 class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
   String? _selectedRole;
   bool _isLoading = false;
-  final List<String> _allTags = ['Flutter', 'AI/ML', 'Design', 'Python', 'Marketing', 'Backend', 'Product'];
+  final List<String> _allTags = [
+    'Flutter',
+    'AI/ML',
+    'Design',
+    'Python',
+    'Marketing',
+    'Backend',
+    'Product',
+  ];
   final List<String> _selectedTags = [];
 
   Future<void> _saveRoleAndContinue() async {
@@ -34,26 +43,37 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       final uid = currentUser?.uid;
-      
+
       // LOGICAL FLAW: We shouldn't silently return if uid is null without notifying
       if (uid == null) {
-        throw Exception("currentUser.uid is null! User session was lost securely before Role Selection.");
+        throw Exception(
+          "currentUser.uid is null! User session was lost securely before Role Selection.",
+        );
       }
-      print('DEBUG: [Get Current User] Successful');
+      debugPrint('DEBUG: [Get Current User] Successful');
 
       // Create or update the user document with the selected role and tags
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'role': _selectedRole == 'mentee' ? 'student' : 'mentor',
-        'name': currentUser!.displayName ?? '',
-        'email': currentUser.email ?? '',
-        'profileImageUrl': currentUser.photoURL,
-        'tags': _selectedTags,
-        'isProfileComplete': false,
-        'onboardingCompletedAt': FieldValue.serverTimestamp(),
-      }, SetOptions(merge: true)).timeout(const Duration(seconds: 10), onTimeout: () {
-        throw Exception('Network timeout: Could not save role and tags. Please check your connection.');
-      });
-      print('DEBUG: [Save User Role and Tags] Successful');
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .set({
+            'role': _selectedRole == 'mentee' ? 'student' : 'mentor',
+            'name': currentUser!.displayName ?? '',
+            'email': currentUser.email ?? '',
+            'profileImageUrl': currentUser.photoURL,
+            'tags': _selectedTags,
+            'isProfileComplete': false,
+            'onboardingCompletedAt': FieldValue.serverTimestamp(),
+          }, SetOptions(merge: true))
+          .timeout(
+            const Duration(seconds: 10),
+            onTimeout: () {
+              throw Exception(
+                'Network timeout: Could not save role and tags. Please check your connection.',
+              );
+            },
+          );
+      debugPrint('DEBUG: [Save User Role and Tags] Successful');
 
       if (mounted) {
         if (_selectedRole == 'mentee') {
@@ -63,7 +83,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
         }
       }
     } catch (e, stackTrace) {
-      print('ERROR: Failed at [Save User Role and Tags] - $e');
+      debugPrint('ERROR: Failed at [Save User Role and Tags] - $e');
       _showCrashReport(e, stackTrace, 'Save User Role and Tags');
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -72,15 +92,29 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AntigravityTheme.pureBlack,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-          onPressed: () => context.go('/auth'),
-          color: AntigravityTheme.textSecondary,
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        await AuthService().signOut();
+        if (context.mounted) {
+          context.go('/welcome');
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AntigravityTheme.pureBlack,
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+            onPressed: () async {
+              await AuthService().signOut();
+              if (context.mounted) {
+                context.go('/welcome');
+              }
+            },
+            color: AntigravityTheme.textSecondary,
+          ),
         ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
@@ -121,7 +155,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 48),
               const Text(
                 'What are your core interests?',
@@ -155,19 +189,28 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                       });
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
                       decoration: BoxDecoration(
-                        color: isSelected ? AntigravityTheme.electricPurple : AntigravityTheme.midnightBlue,
+                        color: isSelected
+                            ? AntigravityTheme.electricPurple
+                            : AntigravityTheme.midnightBlue,
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
-                          color: isSelected ? Colors.white24 : Colors.white.withOpacity(0.05),
+                          color: isSelected
+                              ? Colors.white24
+                              : Colors.white.withValues(alpha: 0.05),
                         ),
                       ),
                       child: Text(
                         tag,
                         style: TextStyle(
                           color: isSelected ? Colors.white : Colors.white70,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: isSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                           fontSize: 13,
                         ),
                       ),
@@ -189,18 +232,23 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
                       width: 20,
                       height: 20,
                       child: CircularProgressIndicator(
-                          color: Colors.white, strokeWidth: 2),
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
                     )
                   : const Text(
                       'Continue',
                       style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
               icon: _isLoading
                   ? null
                   : const Icon(Icons.arrow_forward, color: Colors.white),
             )
           : null,
+      ),
     );
   }
 
@@ -228,16 +276,20 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
           boxShadow: [
             if (isSelected)
               BoxShadow(
-                color: glowColor.withOpacity(0.3),
+                color: glowColor.withValues(alpha: 0.3),
                 blurRadius: 20,
                 spreadRadius: 2,
-              )
+              ),
           ],
         ),
         child: GlassContainer(
           borderRadius: 24,
-          borderColor: isSelected ? glowColor : Colors.white.withOpacity(0.05),
-          backgroundColor: isSelected ? glowColor.withOpacity(0.1) : AntigravityTheme.midnightBlue,
+          borderColor: isSelected
+              ? glowColor
+              : Colors.white.withValues(alpha: 0.05),
+          backgroundColor: isSelected
+              ? glowColor.withValues(alpha: 0.1)
+              : AntigravityTheme.midnightBlue,
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -246,7 +298,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: glowColor.withOpacity(0.2),
+                  color: glowColor.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, size: 24, color: glowColor),
@@ -283,11 +335,18 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: const Color(0xFF1A1527),
-        title: const Text('🔥 Crash Report', style: TextStyle(color: Colors.redAccent)),
+        title: const Text(
+          '🔥 Crash Report',
+          style: TextStyle(color: Colors.redAccent),
+        ),
         content: SingleChildScrollView(
           child: Text(
             'Failed at: $location\n\nError:\n${e.toString()}\n\nStack Trace:\n$stackTrace',
-            style: const TextStyle(color: Colors.white70, fontFamily: 'monospace', fontSize: 12),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontFamily: 'monospace',
+              fontSize: 12,
+            ),
           ),
         ),
         actions: [

@@ -10,6 +10,10 @@ import '../models/connection.dart';
 import '../models/chat.dart';
 import '../models/message.dart';
 import '../services/matchmaking_service.dart';
+import '../services/gemini_match_service.dart';
+import '../services/gemini_chat_service.dart';
+import '../services/video_call_service.dart';
+import '../models/mentor_match.dart';
 import 'auth_provider.dart';
 
 // Repository Providers
@@ -22,7 +26,7 @@ final chatRepositoryProvider = Provider((ref) => ChatRepository());
 final currentUserProvider = FutureProvider<AppUser?>((ref) async {
   final user = ref.watch(authStateChangesProvider).value;
   if (user == null) return null;
-  
+
   final repository = ref.watch(userRepositoryProvider);
   return await repository.getUser(user.uid);
 });
@@ -35,13 +39,45 @@ final topMentorsProvider = StreamProvider<List<AppUser>>((ref) {
 // Matchmaking Providers
 final matchmakingServiceProvider = Provider((ref) => MatchmakingService());
 
+final geminiMatchServiceProvider = Provider((ref) => GeminiMatchService());
+
+final geminiChatServiceProvider = Provider((ref) => GeminiChatService());
+final videoCallServiceProvider = Provider((ref) => VideoCallService());
+
+final otherUserProfileProvider = FutureProvider.family<AppUser?, String>((
+  ref,
+  uid,
+) async {
+  return ref.watch(userRepositoryProvider).getUser(uid);
+});
+
+final userStreamProvider = StreamProvider.family<AppUser?, String>((ref, uid) {
+  return ref.watch(userRepositoryProvider).getUserStream(uid);
+});
+
+final geminiMatchesProvider = FutureProvider<List<MentorMatch>>((ref) async {
+  final currentUser = await ref.watch(currentUserProvider.future);
+  if (currentUser == null ||
+      (currentUser.role != 'mentee' && currentUser.role != 'student')) {
+    return [];
+  }
+  if (currentUser.tags.isEmpty &&
+      currentUser.skills.isEmpty &&
+      currentUser.goals.isEmpty) {
+    return [];
+  }
+
+  final mentors = await ref.watch(topMentorsProvider.future);
+  if (mentors.isEmpty) return [];
+
+  final geminiService = ref.watch(geminiMatchServiceProvider);
+  return await geminiService.getMatches(currentUser, mentors);
+});
+
 final recommendedMentorsProvider = FutureProvider<List<AppUser>>((ref) async {
-  final user = ref.watch(authStateChangesProvider).value;
-  if (user == null) return [];
-  
   final currentUser = await ref.watch(currentUserProvider.future);
   if (currentUser == null || currentUser.role != 'mentee') return [];
-  if (currentUser.tags == null || currentUser.tags!.isEmpty) return [];
+  if (currentUser.tags.isEmpty) return [];
 
   final matchmakingService = ref.watch(matchmakingServiceProvider);
   return await matchmakingService.getDailyMatches(topK: 5);
@@ -57,7 +93,17 @@ final upcomingSessionsProvider = StreamProvider<List<Session>>((ref) {
   return ref.watch(sessionRepositoryProvider).getUpcomingSessions(user.uid);
 });
 
-final pendingRequestsProvider = StreamProvider<List<MentorshipConnection>>((ref) {
+final confirmedSessionsProvider = StreamProvider<List<Message>>((ref) {
+  final user = ref.watch(authStateChangesProvider).value;
+  if (user == null) return Stream.value([]);
+  return ref
+      .watch(chatRepositoryProvider)
+      .getConfirmedSessionsForMentor(user.uid);
+});
+
+final pendingRequestsProvider = StreamProvider<List<MentorshipConnection>>((
+  ref,
+) {
   final user = ref.watch(authStateChangesProvider).value;
   if (user == null) return Stream.value([]);
   return ref.watch(connectionRepositoryProvider).getPendingRequests(user.uid);
@@ -75,7 +121,35 @@ final userChatsProvider = StreamProvider<List<Chat>>((ref) {
   return ref.watch(chatRepositoryProvider).getUserChats(user.uid);
 });
 
-final chatMessagesProvider = StreamProvider.family<List<Message>, String>((ref, chatId) {
+final savedMentorsProvider = StreamProvider<List<AppUser>>((ref) {
+  final user = ref.watch(authStateChangesProvider).value;
+  if (user == null) return Stream.value([]);
+
+  // Stream the current user's doc to get real-time savedMentors updates
+  return FirebaseFirestore.instance
+      .collection('users')
+      .doc(user.uid)
+      .snapshots()
+      .asyncMap((doc) async {
+    final data = doc.data();
+    if (data == null) return <AppUser>[];
+    final savedIds = (data['savedMentors'] as List?)
+            ?.map((e) => e.toString())
+            .toList() ??
+        [];
+    if (savedIds.isEmpty) return <AppUser>[];
+
+    final repo = ref.read(userRepositoryProvider);
+    final futures = savedIds.map((id) => repo.getUser(id));
+    final results = await Future.wait(futures);
+    return results.whereType<AppUser>().toList();
+  });
+});
+
+final chatMessagesProvider = StreamProvider.family<List<Message>, String>((
+  ref,
+  chatId,
+) {
   return ref.watch(chatRepositoryProvider).getChatMessages(chatId);
 });
 
@@ -83,11 +157,14 @@ final chatMessagesProvider = StreamProvider.family<List<Message>, String>((ref, 
 final mentorTotalSessionsProvider = StreamProvider<int>((ref) {
   final user = ref.watch(authStateChangesProvider).value;
   if (user == null) return Stream.value(0);
-  
+
   return FirebaseFirestore.instance
       .collection('sessions')
       .where('mentorId', isEqualTo: user.uid)
-      .where('status', whereIn: ['accepted', 'completed', 'upcoming']) // include relevant statuses
+      .where(
+        'status',
+        whereIn: ['accepted', 'completed', 'upcoming'],
+      ) // include relevant statuses
       .snapshots()
       .map((snapshot) => snapshot.docs.length);
 });
@@ -95,15 +172,18 @@ final mentorTotalSessionsProvider = StreamProvider<int>((ref) {
 final mentorStudentsCountProvider = StreamProvider<int>((ref) {
   final user = ref.watch(authStateChangesProvider).value;
   if (user == null) return Stream.value(0);
-  
+
   return FirebaseFirestore.instance
       .collection('connections')
       .where('mentorId', isEqualTo: user.uid)
       .where('status', isEqualTo: 'accepted')
       .snapshots()
       .map((snapshot) {
-    // Count unique studentIds
-    final studentIds = snapshot.docs.map((doc) => doc.data()['studentId'] as String?).where((id) => id != null).toSet();
-    return studentIds.length;
-  });
+        // Count unique studentIds
+        final studentIds = snapshot.docs
+            .map((doc) => doc.data()['studentId'] as String?)
+            .where((id) => id != null)
+            .toSet();
+        return studentIds.length;
+      });
 });

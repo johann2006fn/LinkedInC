@@ -13,6 +13,14 @@ class UserRepository {
     return null;
   }
 
+  Stream<AppUser?> getUserStream(String uid) {
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .snapshots()
+        .map((doc) => doc.exists ? AppUser.fromFirestore(doc) : null);
+  }
+
   Future<void> createUser(AppUser user) async {
     try {
       await _firestore
@@ -21,7 +29,9 @@ class UserRepository {
           .set(user.toMap())
           .timeout(const Duration(seconds: 10));
     } on TimeoutException {
-      throw Exception('Network timeout. Please check your connection and try again.');
+      throw Exception(
+        'Network timeout. Please check your connection and try again.',
+      );
     } catch (e) {
       throw Exception('Failed to create user: $e');
     }
@@ -31,11 +41,14 @@ class UserRepository {
     return _firestore
         .collection('users')
         .where('role', isEqualTo: 'mentor')
+        .where('acceptingMentees', isEqualTo: true)
         .limit(10)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => AppUser.fromFirestore(doc)).toList();
-    });
+          return snapshot.docs
+              .map((doc) => AppUser.fromFirestore(doc))
+              .toList();
+        });
   }
 
   Stream<List<AppUser>> getTopMentees() {
@@ -45,7 +58,26 @@ class UserRepository {
         .limit(10)
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) => AppUser.fromFirestore(doc)).toList();
-    });
+          return snapshot.docs
+              .map((doc) => AppUser.fromFirestore(doc))
+              .toList();
+        });
+  }
+
+  Future<void> toggleSaveMentor(
+    String userId,
+    String mentorId,
+    bool save,
+  ) async {
+    final userRef = _firestore.collection('users').doc(userId);
+    if (save) {
+      await userRef.update({
+        'savedMentors': FieldValue.arrayUnion([mentorId]),
+      });
+    } else {
+      await userRef.update({
+        'savedMentors': FieldValue.arrayRemove([mentorId]),
+      });
+    }
   }
 }

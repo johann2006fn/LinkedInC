@@ -12,7 +12,7 @@ class GlassContainer extends StatelessWidget {
   final double? height;
 
   const GlassContainer({
-    Key? key,
+    super.key,
     required this.child,
     this.borderRadius = 24.0,
     this.blur = 15.0,
@@ -21,7 +21,7 @@ class GlassContainer extends StatelessWidget {
     this.padding,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +34,10 @@ class GlassContainer extends StatelessWidget {
           height: height,
           padding: padding,
           decoration: BoxDecoration(
-            color: backgroundColor ?? Colors.white.withOpacity(0.05),
+            color: backgroundColor ?? Colors.white.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(borderRadius),
             border: Border.all(
-              color: borderColor ?? Colors.white.withOpacity(0.1),
+              color: borderColor ?? Colors.white.withValues(alpha: 0.1),
               width: 1.5,
             ),
           ),

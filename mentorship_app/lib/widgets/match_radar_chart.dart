@@ -6,11 +6,8 @@ class MatchRadarChart extends StatelessWidget {
   final List<double> values;
   final List<String> labels;
 
-  const MatchRadarChart({
-    super.key,
-    required this.values,
-    required this.labels,
-  }) : assert(values.length == labels.length);
+  const MatchRadarChart({super.key, required this.values, required this.labels})
+    : assert(values.length == labels.length);
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +54,8 @@ class MatchRadarChart extends StatelessWidget {
             ),
           ),
           RadarChart(
-            swapAnimationDuration: const Duration(milliseconds: 800),
-            swapAnimationCurve: Curves.easeInOutBack,
+            duration: const Duration(milliseconds: 800),
+            curve: Curves.easeInOutBack,
             RadarChartData(
               radarShape: RadarShape.polygon,
               tickCount: 5,
@@ -82,7 +79,9 @@ class MatchRadarChart extends StatelessWidget {
               ),
               dataSets: [
                 RadarDataSet(
-                  fillColor: const Color(0xFF5B13EC).withAlpha(64), // 0.25 opacity
+                  fillColor: const Color(
+                    0xFF5B13EC,
+                  ).withAlpha(64), // 0.25 opacity
                   borderColor: const Color(0xFF6C63FF),
                   entryRadius: 4,
                   dataEntries: values

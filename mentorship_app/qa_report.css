@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #0F172A;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #FFFFFF;
+}
+
+h1 {
+    font-size: 24pt;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-bottom: 3px solid #0F172A;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 14pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #2563EB;
+    border-bottom: 1px solid #CBD5E1;
+    margin-top: 2rem;
+    padding-bottom: 0.2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 9pt;
+}
+
+th {
+    background: #F1F5F9;
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #CBD5E1;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 8px;
+    border: 1px solid #CBD5E1;
+}
+
+strong {
+    font-weight: 700;
+}
+
+.status-pass {
+    font-weight: 800;
+    color: #059669;
+}
+
+.header-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8pt;
+    color: #64748B;
+    margin-bottom: 2rem;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-size: 9pt;
+    border-left: 4px solid #2563EB;
+    background: #EFF6FF;
+}
+
+.alert-title {
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+    display: block;
+}
+
+@page {
+    size: A4;
+    margin: 20mm;
+}

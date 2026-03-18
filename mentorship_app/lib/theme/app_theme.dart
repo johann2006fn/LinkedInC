@@ -7,11 +7,12 @@ class AppTheme {
   static const Color darkBlue = Color(0xFF0F172A);
   static const Color background = Color(0xFFF8F9FA);
   static const Color surface = Colors.white;
-  
+  static const Color cardBackground = Color(0xFFE9ECEF);
+
   // Text colors
   static const Color textPrimary = Color(0xFF1A1D1F);
   static const Color textSecondary = Color(0xFF6F767E);
-  
+
   // Status colors
   static const Color success = Color(0xFF16C098);
   static const Color danger = Color(0xFFFF6A55);
@@ -23,7 +24,6 @@ class AppTheme {
       primaryColor: primaryBlue,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryBlue,
-        background: background,
         surface: surface,
       ),
       textTheme: GoogleFonts.interTextTheme().copyWith(
@@ -31,12 +31,8 @@ class AppTheme {
           fontWeight: FontWeight.bold,
           color: textPrimary,
         ),
-        bodyLarge: GoogleFonts.inter(
-          color: textPrimary,
-        ),
-        bodyMedium: GoogleFonts.inter(
-          color: textSecondary,
-        ),
+        bodyLarge: GoogleFonts.inter(color: textPrimary),
+        bodyMedium: GoogleFonts.inter(color: textSecondary),
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: background,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Chat {
   final String id;
@@ -15,13 +16,27 @@ class Chat {
     this.otherUserName = '',
   });
 
+  String get otherUserId {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) return '';
+    return participantIds.firstWhere(
+      (id) => id != currentUser.uid,
+      orElse: () => participantIds.isNotEmpty ? participantIds.first : '',
+    );
+  }
+
   factory Chat.fromFirestore(DocumentSnapshot doc) {
     final data = (doc.data() as Map<String, dynamic>?) ?? {};
     return Chat(
       id: doc.id,
-      participantIds: (data['participantIds'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      participantIds:
+          (data['participantIds'] as List?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
       lastMessage: data['lastMessage'] as String? ?? '',
-      lastUpdated: (data['lastUpdated'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      lastUpdated:
+          (data['lastUpdated'] as Timestamp?)?.toDate() ?? DateTime.now(),
       otherUserName: data['otherUserName'] as String? ?? '',
     );
   }

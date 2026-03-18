@@ -7,7 +7,7 @@ import '../widgets/gradient_button.dart';
 import '../services/matchmaking_service.dart';
 
 class PreferencesScreen extends StatefulWidget {
-  const PreferencesScreen({Key? key}) : super(key: key);
+  const PreferencesScreen({super.key});
 
   @override
   State<PreferencesScreen> createState() => _PreferencesScreenState();
@@ -20,9 +20,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   bool _isSaving = false;
 
   bool _isProfileComplete() {
-    return _selectedIdentity != null && 
-           _selectedPreference != null && 
-           _selectedCommunication != null;
+    return _selectedIdentity != null &&
+        _selectedPreference != null &&
+        _selectedCommunication != null;
   }
 
   Future<void> _completeProfile() async {
@@ -37,10 +37,14 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
     try {
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid != null) {
-        final doc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        final doc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .get();
         final role = doc.data()?['role'] ?? 'student';
 
-        await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        // Use set(merge: true) to prevent NOT_FOUND errors if doc doesn't exist
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'gender': _selectedIdentity,
           'preferences': {
             'connectWith': _selectedPreference,
@@ -48,22 +52,41 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           },
           'isProfileComplete': true,
           'onboardingCompletedAt': FieldValue.serverTimestamp(),
-        });
+        }, SetOptions(merge: true));
 
-        // Re-fetch the full user doc AFTER saving preferences so the embedding
-        // is built from the complete profile: bio + goals (from MenteeOnboardingScreen)
-        // + gender/preferences (just saved above).
-        final freshDoc = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(uid)
-            .get();
-        
-        // This is where it talks to Gemini
-        await MatchmakingService()
-            .generateAndSaveEmbedding(uid, freshDoc.data() ?? {});
+        // ── AI MATCHING (GEMINI) ───────────────────────────────────
+        // In a strict refactor, AI matching is MANDATORY.
+        // If it fails, we show an error and STOP navigation.
+        try {
+          // Re-fetch the full user doc AFTER saving preferences so the embedding
+          // is built from the complete profile
+          final freshDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .get();
+
+          await MatchmakingService().generateAndSaveEmbedding(
+            uid,
+            freshDoc.data() ?? {},
+          );
+        } catch (aiError) {
+          debugPrint("🚨 ONBOARDING_AI_ERROR (Blocking): $aiError");
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'AI Matching Failed: $aiError. Please try again.',
+                ),
+                backgroundColor: Colors.redAccent,
+              ),
+            );
+          }
+          setState(() => _isSaving = false);
+          return; // STOP FLOW HERE
+        }
 
         if (mounted) {
-          // Route to the correct dashboard based on role
+          // Only reach this point if everything (DB update + AI) succeeded
           if (role == 'mentor') {
             context.go('/mentor');
           } else {
@@ -72,13 +95,12 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
         }
       }
     } catch (e) {
-      // 🚨 ADDED PRINT STATEMENT HERE TO CATCH THE EXACT ERROR
-      print("🚨 GEMINI ERROR: $e");
-      
+      debugPrint("🚨 PROFILE_COMPLETION_ERROR: $e");
+
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: $e')));
       }
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -104,9 +126,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
             children: [
               Text(
                 'Tailor your\nexperience.',
-                style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  height: 1.2,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.headlineLarge?.copyWith(height: 1.2),
               ),
               const SizedBox(height: 48),
 
@@ -117,25 +139,33 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                     children: [
                       _buildQuestionSection(
                         title: 'I identify as:',
-                        options: ['Male', 'Female', 'Non-binary', 'Prefer not to say'],
+                        options: [
+                          'Male',
+                          'Female',
+                          'Non-binary',
+                          'Prefer not to say',
+                        ],
                         selectedOption: _selectedIdentity,
-                        onChanged: (val) => setState(() => _selectedIdentity = val),
+                        onChanged: (val) =>
+                            setState(() => _selectedIdentity = val),
                       ),
                       const SizedBox(height: 32),
-                      
+
                       _buildQuestionSection(
                         title: 'I prefer to connect with:',
                         options: ['Anyone', 'Same gender'],
                         selectedOption: _selectedPreference,
-                        onChanged: (val) => setState(() => _selectedPreference = val),
+                        onChanged: (val) =>
+                            setState(() => _selectedPreference = val),
                       ),
                       const SizedBox(height: 32),
-                      
+
                       _buildQuestionSection(
                         title: 'Communication style:',
                         options: ['Video Calls', 'Text Only', 'Both'],
                         selectedOption: _selectedCommunication,
-                        onChanged: (val) => setState(() => _selectedCommunication = val),
+                        onChanged: (val) =>
+                            setState(() => _selectedCommunication = val),
                       ),
                       const SizedBox(height: 48),
                     ],
@@ -184,22 +214,27 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeOutCubic,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
-                  color: isSelected 
-                      ? AntigravityTheme.electricPurple.withOpacity(0.15) 
-                      : Colors.white.withOpacity(0.05),
+                  color: isSelected
+                      ? AntigravityTheme.electricPurple.withValues(alpha: 0.15)
+                      : Colors.white.withValues(alpha: 0.05),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(
-                    color: isSelected 
-                        ? AntigravityTheme.electricPurple 
-                        : Colors.white.withOpacity(0.1),
+                    color: isSelected
+                        ? AntigravityTheme.electricPurple
+                        : Colors.white.withValues(alpha: 0.1),
                     width: isSelected ? 2.0 : 1.0,
                   ),
                   boxShadow: [
                     if (isSelected)
                       BoxShadow(
-                        color: AntigravityTheme.electricPurple.withOpacity(0.4),
+                        color: AntigravityTheme.electricPurple.withValues(
+                          alpha: 0.4,
+                        ),
                         blurRadius: 15,
                         spreadRadius: 2,
                         offset: const Offset(0, 4),
@@ -209,7 +244,9 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 child: Text(
                   option,
                   style: TextStyle(
-                    color: isSelected ? Colors.white : AntigravityTheme.textSecondary,
+                    color: isSelected
+                        ? Colors.white
+                        : AntigravityTheme.textSecondary,
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                     fontSize: 16,
                   ),

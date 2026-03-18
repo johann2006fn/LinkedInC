@@ -1,0 +1,38 @@
+Analyzing mentorship_app...                                     
+
+   info - The variable name 'TargetString' isn't a lowerCamelCase identifier - apply_fix.dart:10:9 - non_constant_identifier_names
+   info - Don't invoke 'print' in production code - apply_fix.dart:15:5 - avoid_print
+   info - Don't invoke 'print' in production code - apply_fix.dart:25:5 - avoid_print
+   info - Don't invoke 'print' in production code - apply_fix.dart:35:3 - avoid_print
+   info - Use interpolation to compose strings and values - fix.dart:26:19 - prefer_interpolation_to_compose_strings
+   info - Use interpolation to compose strings and values - fix.dart:57:22 - prefer_interpolation_to_compose_strings
+   info - Don't invoke 'print' in production code - fix.dart:65:7 - avoid_print
+  error - Target of URI doesn't exist: '../models/app_user.dart' - fix_formatting.dart:4:8 - uri_does_not_exist
+  error - Target of URI doesn't exist: '../theme/antigravity_theme.dart' - fix_formatting.dart:5:8 - uri_does_not_exist
+  error - Undefined class 'AppUser' - fix_formatting.dart:8:9 - undefined_class
+  error - Invalid constant value - fix_formatting.dart:85:90 - invalid_constant
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:85:90 - undefined_identifier
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:168:42 - undefined_identifier
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:171:49 - undefined_identifier
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:207:36 - undefined_identifier
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:252:41 - undefined_identifier
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:253:41 - undefined_identifier
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:269:36 - undefined_identifier
+  error - Undefined name 'AntigravityTheme' - fix_formatting.dart:273:44 - undefined_identifier
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\auth_screen.dart:1:8 - unnecessary_import
+   info - Don't use 'BuildContext's across async gaps - lib\screens\auth_screen.dart:40:11 - use_build_context_synchronously
+  error - Undefined name 'UserRole' - lib\screens\home_screen.dart:24:47 - undefined_identifier
+  error - Undefined name 'allMentorsProvider' - lib\screens\home_screen.dart:26:31 - undefined_identifier
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\mentee_onboarding_screen.dart:1:8 - unnecessary_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\mentor_dashboard_screen.dart:2:8 - unnecessary_import
+warning - The value of the local variable 'mentorName' isn't used - lib\screens\mentor_dashboard_screen.dart:36:11 - unused_local_variable
+   info - The parameter name 'count' matches a visible type name - lib\screens\mentor_dashboard_screen.dart:105:28 - avoid_types_as_parameter_names
+   info - The parameter name 'count' matches a visible type name - lib\screens\mentor_dashboard_screen.dart:111:28 - avoid_types_as_parameter_names
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\mentor_onboarding_screen.dart:1:8 - unnecessary_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\preferences_screen.dart:1:8 - unnecessary_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\role_selection_screen.dart:1:8 - unnecessary_import
+   info - Don't invoke 'print' in production code - refactor_profile.dart:11:5 - avoid_print
+   info - Use interpolation to compose strings and values - refactor_profile.dart:415:39 - prefer_interpolation_to_compose_strings
+   info - Don't invoke 'print' in production code - refactor_profile.dart:416:3 - avoid_print
+
+34 issues found. (ran in 7.8s)

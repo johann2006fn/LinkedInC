@@ -63,8 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1425969683',
     projectId: 'mentorhub-82a2b',
     storageBucket: 'mentorhub-82a2b.firebasestorage.app',
-    androidClientId: '1425969683-gd3n49eo85qksqme29h1ov6olir28hfc.apps.googleusercontent.com',
-    iosClientId: '1425969683-hnhedn4d3i29ftnhfv75pmlshgaf61vf.apps.googleusercontent.com',
+    androidClientId:
+        '1425969683-gd3n49eo85qksqme29h1ov6olir28hfc.apps.googleusercontent.com',
+    iosClientId:
+        '1425969683-hnhedn4d3i29ftnhfv75pmlshgaf61vf.apps.googleusercontent.com',
     iosBundleId: 'com.example.mentorshipApp',
   );
 
@@ -74,8 +76,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1425969683',
     projectId: 'mentorhub-82a2b',
     storageBucket: 'mentorhub-82a2b.firebasestorage.app',
-    androidClientId: '1425969683-gd3n49eo85qksqme29h1ov6olir28hfc.apps.googleusercontent.com',
-    iosClientId: '1425969683-hnhedn4d3i29ftnhfv75pmlshgaf61vf.apps.googleusercontent.com',
+    androidClientId:
+        '1425969683-gd3n49eo85qksqme29h1ov6olir28hfc.apps.googleusercontent.com',
+    iosClientId:
+        '1425969683-hnhedn4d3i29ftnhfv75pmlshgaf61vf.apps.googleusercontent.com',
     iosBundleId: 'com.example.mentorshipApp',
   );
 

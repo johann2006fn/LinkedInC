@@ -1,9 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/app_user.dart';
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Fully client-side matchmaking service powered by Gemini.
 /// Replaces Cloud Functions — works on Firebase Spark (free) plan.
@@ -16,21 +20,18 @@ import '../models/app_user.dart';
 ///   5. AI icebreaker generation (gemini-2.0-flash)
 ///   6. Prompt-based fallback matching (for profiles without embeddings)
 class MatchmakingService {
-  // API key is injected at build time via --dart-define=GEMINI_API_KEY=<key>
-  static const _apiKey = String.fromEnvironment('GEMINI_API_KEY');
+  // API key is retrieved from .env file via flutter_dotenv
+  final _apiKey = dotenv.env['GEMINI_API_KEY'] ?? '';
 
   final FirebaseFirestore _firestore;
   late final GenerativeModel _chatModel;
   late final GenerativeModel _embeddingModel;
 
   MatchmakingService({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance {
-    _chatModel = GenerativeModel(
-      model: 'gemini-2.0-flash',
-      apiKey: _apiKey,
-    );
+    : _firestore = firestore ?? FirebaseFirestore.instance {
+    _chatModel = GenerativeModel(model: 'gemini-2.0-flash', apiKey: _apiKey);
     _embeddingModel = GenerativeModel(
-      model: 'text-embedding-004',
+      model: 'gemini-embedding-001',
       apiKey: _apiKey,
     );
   }
@@ -53,7 +54,7 @@ class MatchmakingService {
   ) async {
     // ── Build profile text from bio + goals + skills ─────────────────────
     final bio = (userData['bio'] as String?)?.trim() ?? '';
-    
+
     final goalsRaw = userData['goals'];
     final goals = goalsRaw is List
         ? goalsRaw.cast<String>().join(', ')
@@ -78,15 +79,16 @@ class MatchmakingService {
       );
       final embedding = result.embedding.values;
 
-      await _firestore.collection('users').doc(userId).update({
-        'profileEmbedding': embedding,
-      }).timeout(const Duration(seconds: 10));
-      print('DEBUG: [Save Profile Embedding] Successful');
-    } on TimeoutException {
-      throw Exception('Network timeout. Please check your connection and try again.');
+      await _firestore
+          .collection('users')
+          .doc(userId)
+          .set({'profileEmbedding': embedding}, SetOptions(merge: true))
+          .timeout(const Duration(seconds: 10));
+      debugPrint('DEBUG: [Save Profile Embedding] Successful');
     } catch (e, stackTrace) {
-      print('ERROR: Failed at [Save Profile Embedding] - $e\n$stackTrace');
-      // Silently fail — embeddings are optional; prompt fallback will work
+      debugPrint('ERROR: Failed at [Save Profile Embedding] - $e\n$stackTrace');
+      // Rethrow to allow the UI (PreferencesScreen) to handle the error and block navigation
+      rethrow;
     }
   }
 
@@ -102,9 +104,14 @@ class MatchmakingService {
   ///  -1.0  = opposite direction
   ///
   /// Returns 0.0 if either vector has zero magnitude (safe divide-by-zero).
-  static double calculateCosineSimilarity(List<double> vecA, List<double> vecB) {
-    assert(vecA.length == vecB.length,
-        'Vectors must be the same length: ${vecA.length} vs ${vecB.length}');
+  static double calculateCosineSimilarity(
+    List<double> vecA,
+    List<double> vecB,
+  ) {
+    assert(
+      vecA.length == vecB.length,
+      'Vectors must be the same length: ${vecA.length} vs ${vecB.length}',
+    );
 
     double dotProduct = 0;
     double normA = 0;
@@ -133,13 +140,34 @@ class MatchmakingService {
   ///
   /// Throws a [StateError] if the student document has no embedding yet.
   /// Call [generateAndSaveEmbedding] first if needed.
+  /// Returns the set of mentor IDs that the student already has an
+  /// accepted or pending connection with.
+  Future<Set<String>> _getConnectedMentorIds(String studentId) async {
+    try {
+      final snapshot = await _firestore
+          .collection('connections')
+          .where('studentId', isEqualTo: studentId)
+          .where('status', whereIn: ['accepted', 'pending'])
+          .get();
+      return snapshot.docs
+          .map((doc) => doc.data()['mentorId'] as String? ?? '')
+          .where((id) => id.isNotEmpty)
+          .toSet();
+    } catch (e) {
+      debugPrint('WARN: Could not fetch connected mentor IDs: $e');
+      return {};
+    }
+  }
+
   Future<List<AppUser>> findTopMentors(
     String studentId, {
     int limit = 5,
   }) async {
     // ── 1. Fetch student embedding ────────────────────────────────────────
-    final studentDoc =
-        await _firestore.collection('users').doc(studentId).get();
+    final studentDoc = await _firestore
+        .collection('users')
+        .doc(studentId)
+        .get();
     if (!studentDoc.exists) {
       throw StateError('Student document not found: $studentId');
     }
@@ -154,13 +182,16 @@ class MatchmakingService {
       );
     }
 
-    final studentVec =
-        rawEmbedding.map((e) => (e as num).toDouble()).toList();
+    final studentVec = rawEmbedding.map((e) => (e as num).toDouble()).toList();
+
+    // ── 1b. Get already-connected mentor IDs ──────────────────────────────
+    final connectedIds = await _getConnectedMentorIds(studentId);
 
     // ── 2. Fetch all mentors ───────────────────────────────────────────────
     final mentorsSnap = await _firestore
         .collection('users')
         .where('role', isEqualTo: 'mentor')
+        .where('acceptingMentees', isEqualTo: true)
         .limit(50)
         .get();
 
@@ -170,8 +201,10 @@ class MatchmakingService {
     final scored = <MapEntry<AppUser, double>>[];
 
     for (final doc in mentorsSnap.docs) {
-      // Skip the student themselves (edge case where a user is both)
+      // Skip the student themselves
       if (doc.id == studentId) continue;
+      // Skip already-connected mentors
+      if (connectedIds.contains(doc.id)) continue;
 
       final mentor = AppUser.fromFirestore(doc);
       final mentorVec = mentor.profileEmbedding;
@@ -180,7 +213,10 @@ class MatchmakingService {
       if (mentorVec != null &&
           mentorVec.isNotEmpty &&
           mentorVec.length == studentVec.length) {
-        score = MatchmakingService.calculateCosineSimilarity(studentVec, mentorVec);
+        score = MatchmakingService.calculateCosineSimilarity(
+          studentVec,
+          mentorVec,
+        );
       }
 
       scored.add(MapEntry(mentor, score));
@@ -192,9 +228,10 @@ class MatchmakingService {
     // ── 5. Return top [limit] mentors with matchScore attached ────────────
     return scored
         .take(limit)
-        .map((entry) => entry.key.copyWith(
-              matchScore: (entry.value * 100).round(),
-            ))
+        .map(
+          (entry) =>
+              entry.key.copyWith(matchScore: (entry.value * 100).round()),
+        )
         .toList();
   }
 
@@ -230,9 +267,14 @@ class MatchmakingService {
     final mentorsSnap = await query.limit(50).get();
     if (mentorsSnap.docs.isEmpty) return [];
 
+    // ── Get already-connected mentor IDs ──────────────────────────────
+    final connectedIds = await _getConnectedMentorIds(uid);
+
     var mentors = mentorsSnap.docs
         .map((doc) => AppUser.fromFirestore(doc))
         .where((m) => m.id != uid)
+        .where((m) => m.acceptingMentees) // Rule 1: exclude non-accepting mentors
+        .where((m) => !connectedIds.contains(m.id)) // Exclude already-connected
         .toList();
 
     // ── Gender Preference ────────────────────────────────────────────────
@@ -257,14 +299,11 @@ class MatchmakingService {
           mentor.profileEmbedding!,
         );
         return MapEntry(mentor, score);
-      }).toList()
-        ..sort((a, b) => b.value.compareTo(a.value));
+      }).toList()..sort((a, b) => b.value.compareTo(a.value));
 
       return scored
           .take(topK)
-          .map((e) => e.key.copyWith(
-                matchScore: (e.value * 100).round(),
-              ))
+          .map((e) => e.key.copyWith(matchScore: (e.value * 100).round()))
           .toList();
     }
 
@@ -291,10 +330,10 @@ class MatchmakingService {
           'Keep it warm, brief, and specific. Only output the message text.';
 
       final response = await _chatModel.generateContent([Content.text(prompt)]);
-      print('DEBUG: [Generate Icebreaker] Successful');
+      debugPrint('DEBUG: [Generate Icebreaker] Successful');
       return response.text ?? 'Hi! Excited to connect with you! 🚀';
     } catch (e, stackTrace) {
-      print('ERROR: Failed at [Generate Icebreaker] - $e\n$stackTrace');
+      debugPrint('ERROR: Failed at [Generate Icebreaker] - $e\n$stackTrace');
       return 'Hi! Excited to connect with you! 🚀';
     }
   }
@@ -306,23 +345,30 @@ class MatchmakingService {
   }) async {
     try {
       // Get both profiles
-      final mentorDoc =
-          await _firestore.collection('users').doc(mentorId).get();
-      final studentDoc =
-          await _firestore.collection('users').doc(studentId).get();
+      final mentorDoc = await _firestore
+          .collection('users')
+          .doc(mentorId)
+          .get();
+      final studentDoc = await _firestore
+          .collection('users')
+          .doc(studentId)
+          .get();
       if (!mentorDoc.exists || !studentDoc.exists) return null;
 
       final mentor = AppUser.fromFirestore(mentorDoc);
       final student = AppUser.fromFirestore(studentDoc);
 
       // Create the chat room
-      final chatRef = await _firestore.collection('chats').add({
-        'participantIds': [mentorId, studentId],
-        'lastMessage': '',
-        'lastUpdated': FieldValue.serverTimestamp(),
-        'otherUserName': '',
-        'createdAt': FieldValue.serverTimestamp(),
-      }).timeout(const Duration(seconds: 10));
+      final chatRef = await _firestore
+          .collection('chats')
+          .add({
+            'participantIds': [mentorId, studentId],
+            'lastMessage': '',
+            'lastUpdated': FieldValue.serverTimestamp(),
+            'otherUserName': '',
+            'createdAt': FieldValue.serverTimestamp(),
+          })
+          .timeout(const Duration(seconds: 10));
 
       // Generate icebreaker
       final icebreaker = await generateIcebreaker(
@@ -331,25 +377,34 @@ class MatchmakingService {
       );
 
       // Save as a draft message
-      await chatRef.collection('messages').add({
-        'chatId': chatRef.id,
-        'senderId': studentId,
-        'content': icebreaker,
-        'timestamp': FieldValue.serverTimestamp(),
-        'isDraft': true,
-      }).timeout(const Duration(seconds: 10));
+      await chatRef
+          .collection('messages')
+          .add({
+            'chatId': chatRef.id,
+            'senderId': studentId,
+            'content': icebreaker,
+            'timestamp': FieldValue.serverTimestamp(),
+            'isDraft': true,
+          })
+          .timeout(const Duration(seconds: 10));
 
-      await chatRef.update({
-        'lastMessage': icebreaker,
-        'lastUpdated': FieldValue.serverTimestamp(),
-      }).timeout(const Duration(seconds: 10));
+      await chatRef
+          .update({
+            'lastMessage': icebreaker,
+            'lastUpdated': FieldValue.serverTimestamp(),
+          })
+          .timeout(const Duration(seconds: 10));
 
-      print('DEBUG: [Create Chat with Icebreaker] Successful');
+      debugPrint('DEBUG: [Create Chat with Icebreaker] Successful');
       return chatRef.id;
     } on TimeoutException {
-      throw Exception('Network timeout. Please check your connection and try again.');
+      throw Exception(
+        'Network timeout. Please check your connection and try again.',
+      );
     } catch (e, stackTrace) {
-      print('ERROR: Failed at [Create Chat with Icebreaker] - $e\n$stackTrace');
+      debugPrint(
+        'ERROR: Failed at [Create Chat with Icebreaker] - $e\n$stackTrace',
+      );
       throw Exception('Failed to create chat with icebreaker: $e');
     }
   }
@@ -368,10 +423,13 @@ class MatchmakingService {
       final mentorListText = mentors
           .asMap()
           .entries
-          .map((e) => 'MENTOR ${e.key + 1}:\n${e.value.toMatchingDescription()}')
+          .map(
+            (e) => 'MENTOR ${e.key + 1}:\n${e.value.toMatchingDescription()}',
+          )
           .join('\n---\n');
 
-      final prompt = '''
+      final prompt =
+          '''
 You are an intelligent mentor-matching algorithm for a college mentorship app.
 
 MENTEE PROFILE:
@@ -394,20 +452,20 @@ Consider: shared interests, complementary skills, goals alignment, and departmen
 Be concise. Only output valid JSON.
 ''';
 
-      final response =
-          await _chatModel.generateContent([Content.text(prompt)]);
+      final response = await _chatModel.generateContent([Content.text(prompt)]);
       final rawText = response.text ?? '';
 
-      print('DEBUG: [Prompt Based Match] Successful');
-      return _parseGeminiResponse(rawText, mentors).take(topK).toList();
+      debugPrint('DEBUG: [Prompt Based Match] Successful');
+      final matches = await _parseGeminiResponse(rawText, mentors);
+      return matches.take(topK).toList();
     } catch (e, stackTrace) {
-      print('ERROR: Failed at [Prompt Based Match] - $e\n$stackTrace');
+      debugPrint('ERROR: Failed at [Prompt Based Match] - $e\n$stackTrace');
       // Return unranked mentors as absolute fallback
       return mentors.take(topK).toList();
     }
   }
 
-  List<AppUser> _parseGeminiResponse(String rawText, List<AppUser> mentors) {
+  Future<List<AppUser>> _parseGeminiResponse(String rawText, List<AppUser> mentors) async {
     try {
       final jsonStart = rawText.indexOf('[');
       final jsonEnd = rawText.lastIndexOf(']');
@@ -415,22 +473,35 @@ Be concise. Only output valid JSON.
 
       final jsonStr = rawText.substring(jsonStart, jsonEnd + 1);
       final ranked = <AppUser>[];
-      final entries =
-          RegExp(r'"mentorNumber"\s*:\s*(\d+).*?"score"\s*:\s*(\d+)')
-              .allMatches(jsonStr);
+      
+      final List<dynamic> jsonList = jsonDecode(jsonStr);
 
-      for (final match in entries) {
-        final mentorNum = int.tryParse(match.group(1) ?? '') ?? 0;
-        final score = int.tryParse(match.group(2) ?? '') ?? 0;
-        if (mentorNum >= 1 && mentorNum <= mentors.length) {
+      for (final item in jsonList) {
+        final mentorNum = item['mentorNumber'] as int?;
+        final score = item['score'] is num ? (item['score'] as num).toInt() : 0;
+        final reason = item['reason']?.toString();
+
+        if (mentorNum != null && mentorNum >= 1 && mentorNum <= mentors.length) {
           final mentor = mentors[mentorNum - 1];
-          ranked.add(mentor.copyWith(matchScore: score));
+
+          if (reason != null && score > 0) {
+            try {
+              await FirebaseFirestore.instance.collection('users').doc(mentor.id).update({
+                'matchScore': score,
+                'matchReason': reason,
+              });
+            } catch (e) {
+              debugPrint('Gemini API Error (Firestore Update): $e');
+            }
+          }
+
+          ranked.add(mentor.copyWith(matchScore: score, matchReason: reason));
         }
       }
 
       return ranked.isEmpty ? mentors : ranked;
     } catch (e, stackTrace) {
-      print('ERROR: Failed at [Parse Gemini Response] - $e\n$stackTrace');
+      debugPrint('Gemini API Error: Failed at [Parse Gemini Response] - $e\n$stackTrace');
       return mentors;
     }
   }

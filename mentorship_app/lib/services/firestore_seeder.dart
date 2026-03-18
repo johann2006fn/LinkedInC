@@ -155,7 +155,9 @@ class FirestoreSeeder {
         'authorName': allMentors.docs.first.data()['name'] ?? 'Mentor',
         'content':
             '🚀 Excited to be here! For all mentees: focus on the fundamentals — strong problem-solving skills will take you further than any framework. Happy to answer questions!',
-        'createdAt': Timestamp.fromDate(DateTime.now().subtract(const Duration(hours: 3))),
+        'createdAt': Timestamp.fromDate(
+          DateTime.now().subtract(const Duration(hours: 3)),
+        ),
         'likesCount': 12,
       });
 
@@ -164,7 +166,9 @@ class FirestoreSeeder {
         'authorName': allMentors.docs.last.data()['name'] ?? 'Mentor',
         'content':
             '📚 Resource of the week: "Designing Data-Intensive Applications" by Martin Kleppmann. Must-read for anyone interested in backend systems and distributed computing.',
-        'createdAt': Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 1))),
+        'createdAt': Timestamp.fromDate(
+          DateTime.now().subtract(const Duration(days: 1)),
+        ),
         'likesCount': 24,
       });
     }
@@ -172,4 +176,65 @@ class FirestoreSeeder {
 
   /// Legacy seedAll kept for compatibility — now delegates to seedSampleMentors.
   Future<void> seedAll() => seedSampleMentors();
+
+  /// Seeds specifically for Mentor Dashboard testing (Creates dummy mentees, connections, and sessions)
+  Future<void> seedMentorData() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) throw Exception('Not logged in');
+
+    final batch = _db.batch();
+
+    // 1. Create a dummy mentee user
+    final dummyMenteeRef = _db.collection('users').doc();
+    batch.set(dummyMenteeRef, {
+      'name': 'Alex Student (Test)',
+      'role': 'mentee',
+      'email': 'alex@test.com',
+      'subtitle': 'Computer Science, Junior',
+      'bio': 'Looking to learn more about mobile dev.',
+      'tags': ['Flutter', 'Mobile App'],
+    });
+
+    // 2. Create a pending connection request
+    final connRef = _db.collection('connections').doc();
+    batch.set(connRef, {
+      'mentorId': uid,
+      'studentId': dummyMenteeRef.id,
+      'studentName': 'Alex Student (Test)',
+      'note':
+          'Hi! I saw your profile and would love to get some guidance on Flutter architecture.',
+      'status': 'pending',
+      'createdAt': FieldValue.serverTimestamp(),
+    });
+
+    // 3. Create a scheduled session for Today
+    final sessionRef1 = _db.collection('sessions').doc();
+    batch.set(sessionRef1, {
+      'mentorId': uid,
+      'mentorName': 'Me (Mentor)',
+      'studentId': dummyMenteeRef.id,
+      'studentName': 'Alex Student (Test)',
+      'topic': 'Resume Review & App Architecture',
+      'status': 'upcoming',
+      'scheduledTime': Timestamp.fromDate(
+        DateTime.now().add(const Duration(hours: 1)),
+      ),
+    });
+
+    // 4. Create a scheduled session for Tomorrow
+    final sessionRef2 = _db.collection('sessions').doc();
+    batch.set(sessionRef2, {
+      'mentorId': uid,
+      'mentorName': 'Me (Mentor)',
+      'studentId': dummyMenteeRef.id,
+      'studentName': 'Alex Student (Test)',
+      'topic': 'Mock Interview: System Design',
+      'status': 'upcoming',
+      'scheduledTime': Timestamp.fromDate(
+        DateTime.now().add(const Duration(days: 1, hours: 2)),
+      ),
+    });
+
+    await batch.commit();
+  }
 }

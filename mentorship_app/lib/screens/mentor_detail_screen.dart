@@ -10,8 +10,15 @@ import '../providers/app_providers.dart';
 
 class MentorDetailScreen extends ConsumerStatefulWidget {
   final AppUser mentor;
+  final double? matchScore;
+  final String? matchReason;
 
-  const MentorDetailScreen({super.key, required this.mentor});
+  const MentorDetailScreen({
+    super.key, 
+    required this.mentor,
+    this.matchScore,
+    this.matchReason,
+  });
 
   @override
   ConsumerState<MentorDetailScreen> createState() => _MentorDetailScreenState();

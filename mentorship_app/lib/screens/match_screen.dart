@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
-import '../providers/app_providers.dart';
 import '../services/matchmaking_service.dart';
 import '../models/app_user.dart';
 import '../theme/app_theme.dart';
+import '../widgets/user_avatar.dart';
 
-class MatchScreenScreen extends ConsumerStatefulWidget {
-  const MatchScreenScreen({super.key});
+class MatchScreen extends ConsumerStatefulWidget {
+  const MatchScreen({super.key});
 
   @override
-  ConsumerState<MatchScreenScreen> createState() => _MatchScreenScreenState();
+  ConsumerState<MatchScreen> createState() => _MatchScreenState();
 }
 
-class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
+class _MatchScreenState extends ConsumerState<MatchScreen> {
   List<AppUser> _matches = [];
   bool _isLoading = false;
   String? _error;
@@ -33,7 +32,9 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
     });
 
     try {
-      final userProfile = await ref.read(authServiceProvider).getCurrentUserProfile();
+      final userProfile = await ref
+          .read(authServiceProvider)
+          .getCurrentUserProfile();
       if (userProfile == null) throw Exception('User profile not found.');
 
       final service = MatchmakingService();
@@ -69,10 +70,10 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
       body: _isLoading
           ? _buildLoadingState()
           : _error != null
-              ? _buildErrorState()
-              : _matches.isEmpty
-                  ? _buildEmptyState()
-                  : _buildMatchList(),
+          ? _buildErrorState()
+          : _matches.isEmpty
+          ? _buildEmptyState()
+          : _buildMatchList(),
     );
   }
 
@@ -93,16 +94,13 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
           const Text(
             'Gemini is finding your\nbest matches…',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: AppTheme.textSecondary,
-              fontSize: 16,
-            ),
+            style: TextStyle(color: AppTheme.textSecondary, fontSize: 16),
           ),
           const SizedBox(height: 8),
           Text(
             'This usually takes a few seconds',
             style: TextStyle(
-              color: AppTheme.textSecondary.withOpacity(0.5),
+              color: AppTheme.textSecondary.withValues(alpha: 0.5),
               fontSize: 12,
             ),
           ),
@@ -145,7 +143,11 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.people_outline, size: 64, color: Colors.grey.withOpacity(0.4)),
+          Icon(
+            Icons.people_outline,
+            size: 64,
+            color: Colors.grey.withValues(alpha: 0.4),
+          ),
           const SizedBox(height: 16),
           const Text(
             'No mentors found in your college yet.',
@@ -176,16 +178,16 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: rank == 1
-              ? const Color(0xFF6C63FF).withOpacity(0.5)
-              : Colors.grey.withOpacity(0.15),
+              ? const Color(0xFF6C63FF).withValues(alpha: 0.5)
+              : Colors.grey.withValues(alpha: 0.15),
           width: rank == 1 ? 2 : 1,
         ),
         boxShadow: rank == 1
             ? [
                 BoxShadow(
-                  color: const Color(0xFF6C63FF).withOpacity(0.1),
+                  color: const Color(0xFF6C63FF).withValues(alpha: 0.1),
                   blurRadius: 12,
-                )
+                ),
               ]
             : [],
       ),
@@ -200,7 +202,7 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
               decoration: BoxDecoration(
                 color: rank == 1
                     ? const Color(0xFF6C63FF)
-                    : Colors.grey.withOpacity(0.2),
+                    : Colors.grey.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Center(
@@ -216,20 +218,7 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
             ),
             const SizedBox(width: 12),
             // Avatar
-            CircleAvatar(
-              radius: 26,
-              backgroundImage: mentor.profileImageUrl != null
-                  ? NetworkImage(mentor.profileImageUrl!)
-                  : null,
-              backgroundColor: const Color(0xFF4ADE80),
-              child: mentor.profileImageUrl == null
-                  ? Text(
-                      mentor.name.isNotEmpty ? mentor.name[0] : '?',
-                      style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    )
-                  : null,
-            ),
+            UserAvatar(user: mentor, radius: 26),
             const SizedBox(width: 12),
             // Info
             Expanded(
@@ -248,8 +237,11 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
                       ),
                       if (rank == 1) ...[
                         const SizedBox(width: 6),
-                        const Icon(Icons.star_rounded,
-                            color: Color(0xFFFFD700), size: 14),
+                        const Icon(
+                          Icons.star_rounded,
+                          color: Color(0xFFFFD700),
+                          size: 14,
+                        ),
                         const Text(
                           ' Best Match',
                           style: TextStyle(
@@ -265,7 +257,9 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
                     Text(
                       mentor.subtitle!,
                       style: const TextStyle(
-                          color: AppTheme.textSecondary, fontSize: 12),
+                        color: AppTheme.textSecondary,
+                        fontSize: 12,
+                      ),
                     ),
                   const SizedBox(height: 6),
                   Wrap(
@@ -274,9 +268,13 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
                     children: mentor.tags.take(3).map((tag) {
                       return Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF6C63FF).withOpacity(0.15),
+                          color: const Color(
+                            0xFF6C63FF,
+                          ).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(
@@ -307,8 +305,7 @@ class _MatchScreenScreenState extends ConsumerState<MatchScreenScreen> {
                 ),
                 const Text(
                   'match',
-                  style:
-                      TextStyle(color: AppTheme.textSecondary, fontSize: 10),
+                  style: TextStyle(color: AppTheme.textSecondary, fontSize: 10),
                 ),
               ],
             ),

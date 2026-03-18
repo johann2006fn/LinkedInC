@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../models/session.dart';
+import '../services/video_call_service.dart';
+import '../providers/app_providers.dart';
 
-class UpcomingSessionCard extends StatelessWidget {
+class UpcomingSessionCard extends ConsumerWidget {
   final Session session;
 
   const UpcomingSessionCard({super.key, required this.session});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isToday = _isToday(session.scheduledTime);
-    final dateLabel = isToday ? 'TODAY' : DateFormat('MMM d').format(session.scheduledTime).toUpperCase();
+    final dateLabel = isToday
+        ? 'TODAY'
+        : DateFormat('MMM d').format(session.scheduledTime).toUpperCase();
     final timeLabel = DateFormat('HH:mm').format(session.scheduledTime);
 
     return Container(
@@ -27,9 +32,12 @@ class UpcomingSessionCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -37,7 +45,7 @@ class UpcomingSessionCard extends StatelessWidget {
                     Text(
                       dateLabel,
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
+                        color: Colors.white.withValues(alpha: 0.7),
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.5,
@@ -67,21 +75,27 @@ class UpcomingSessionCard extends StatelessWidget {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Icon(
                           Icons.person,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                           size: 16,
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          session.mentorName,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 14,
+                        Expanded(
+                          child: Text(
+                            session.mentorName,
+                            style: TextStyle(
+                              color: Colors.white.withValues(alpha: 0.7),
+                              fontSize: 14,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -97,7 +111,18 @@ class UpcomingSessionCard extends StatelessWidget {
               Expanded(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Feature coming soon! 🚀'), behavior: SnackBarBehavior.floating));
+                    final currentUser = ref.read(currentUserProvider).value;
+                    if (currentUser == null) return;
+                    final chatId = session.studentId.hashCode <= session.mentorId.hashCode
+                        ? '${session.studentId}_${session.mentorId}'
+                        : '${session.mentorId}_${session.studentId}';
+                    
+                    final service = VideoCallService();
+                    service.launchMeeting(
+                      chatId: chatId,
+                      userName: currentUser.name,
+                      topic: session.topic,
+                    );
                   },
                   icon: const Icon(Icons.videocam, color: AppTheme.darkBlue),
                   label: const Text(
@@ -121,10 +146,17 @@ class UpcomingSessionCard extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Feature coming soon! 🚀'), behavior: SnackBarBehavior.floating));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Rescheduling feature coming soon.'),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
                   },
                   style: OutlinedButton.styleFrom(
-                    side: BorderSide(color: Colors.white.withOpacity(0.2)),
+                    side: BorderSide(
+                      color: Colors.white.withValues(alpha: 0.2),
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -148,6 +180,8 @@ class UpcomingSessionCard extends StatelessWidget {
 
   bool _isToday(DateTime date) {
     final now = DateTime.now();
-    return date.year == now.year && date.month == now.month && date.day == now.day;
+    return date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
   }
 }

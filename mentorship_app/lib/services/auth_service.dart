@@ -15,20 +15,34 @@ class AuthService {
   final GoogleSignIn _googleSignIn;
   final FirebaseFirestore _firestore;
 
+  static final GoogleSignIn _sharedGoogleSignIn = GoogleSignIn(
+    clientId: kIsWeb ? _webClientId : null,
+  );
+
   AuthService({
     FirebaseAuth? auth,
     GoogleSignIn? googleSignIn,
     FirebaseFirestore? firestore,
-  })  : _auth = auth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ??
-            GoogleSignIn(
-              // On web: must match the meta tag in index.html
-              clientId: kIsWeb ? _webClientId : null,
-            ),
-        _firestore = firestore ?? FirebaseFirestore.instance;
+  }) : _auth = auth ?? FirebaseAuth.instance,
+       _googleSignIn = googleSignIn ?? _sharedGoogleSignIn,
+       _firestore = firestore ?? FirebaseFirestore.instance;
 
   User? get currentUser => _auth.currentUser;
   Stream<User?> get authStateChanges => _auth.authStateChanges();
+
+  /// Verifies if a college code exists.
+  Future<bool> verifyCollegeCode(String code) async {
+    if (code.trim().isEmpty) return false;
+    final upperCode = code.trim().toUpperCase();
+
+    final snapshot = await _firestore
+        .collection('colleges')
+        .where('code', isEqualTo: upperCode)
+        .limit(1)
+        .get();
+
+    return snapshot.docs.isNotEmpty;
+  }
 
   /// Sign in with Google. Returns the Firebase [User] on success.
   Future<User?> signInWithGoogle() async {
@@ -42,24 +56,89 @@ class AuthService {
       idToken: googleAuth.idToken,
     );
 
-    final UserCredential result =
-        await _auth.signInWithCredential(credential);
+    final UserCredential result = await _auth.signInWithCredential(credential);
     return result.user;
   }
 
-  /// Verifies a college code against the `colleges` Firestore collection.
-  /// Checks if the entered code exists in any document's `access_codes` array.
-  Future<bool> verifyCollegeCode(String code) async {
-    if (code.trim().isEmpty) return false;
-    final upperCode = code.trim().toUpperCase();
-
-    final snapshot = await _firestore
+  /// Verifies a college identity and claims it for the user.
+  Future<bool> verifyCollegeIdentity({
+    required String collegeCode,
+    required String identityId,
+    required String inviteCode,
+    required String uid,
+  }) async {
+    // Step A: Query for college document
+    final collegeSnapshot = await _firestore
         .collection('colleges')
-        .where('code', isEqualTo: upperCode)
+        .where('code', isEqualTo: collegeCode.trim().toUpperCase())
         .limit(1)
         .get();
 
-    return snapshot.docs.isNotEmpty;
+    if (collegeSnapshot.docs.isEmpty) {
+      throw Exception('Invalid College Code');
+    }
+
+    final collegeDocId = collegeSnapshot.docs.first.id;
+
+    // Run transaction for atomicity
+    return await _firestore.runTransaction((transaction) async {
+      final identityRef = _firestore
+          .collection('colleges')
+          .doc(collegeDocId)
+          .collection('identities')
+          .doc(identityId.trim());
+
+      final userRef = _firestore.collection('users').doc(uid);
+
+      final identityDoc = await transaction.get(identityRef);
+      final userDoc = await transaction.get(userRef);
+
+      // Step C: Check identity existence
+      if (!identityDoc.exists) {
+        throw Exception('ID not found');
+      }
+
+      final data = identityDoc.data()!;
+
+      // Step D: Verify Invite Code
+      if (data['inviteCode'] != inviteCode.trim().toUpperCase()) {
+        throw Exception('Invalid Invite Code');
+      }
+
+      // Step E: Check if identity already claimed
+      if (data['isClaimed'] == true && data['claimedBy'] != uid) {
+        throw Exception('This ID has already been claimed by another user');
+      }
+
+      // Step F: Prevent re-verification if already verified (optional but strict)
+      if (userDoc.exists) {
+        final userData = userDoc.data()!;
+        if (userData['isVerifiedCollegeUser'] == true) {
+          throw Exception('Account is already verified');
+        }
+      }
+
+      // Step G: Claim identity
+      transaction.update(identityRef, {
+        'isClaimed': true,
+        'claimedBy': uid,
+        'claimedAt': FieldValue.serverTimestamp(),
+      });
+
+      // Step H: Update user document
+      // This is the EXCLUSIVE place where isVerifiedCollegeUser and role are set
+      transaction.set(userRef, {
+        'isVerifiedCollegeUser': true,
+        'role': data['role'] ?? 'student',
+        'name':
+            data['name'] ??
+            (userDoc.exists ? (userDoc.data()!['name'] ?? '') : ''),
+        'collegeCode': collegeCode.trim().toUpperCase(),
+        'identityId': identityId.trim(),
+      }, SetOptions(merge: true));
+
+      return true;
+    });
   }
 
   /// Checks if the currently signed-in user already has a Firestore profile.
@@ -77,7 +156,9 @@ class AuthService {
           .set(user.toMap(), SetOptions(merge: true))
           .timeout(const Duration(seconds: 10));
     } on TimeoutException {
-      throw Exception('Network timeout. Please check your connection and try again.');
+      throw Exception(
+        'Network timeout. Please check your connection and try again.',
+      );
     } catch (e) {
       throw Exception('Failed to create user profile: $e');
     }
@@ -93,6 +174,20 @@ class AuthService {
   }
 
   Future<void> signOut() async {
+    // Set presence to offline before signing out
+    final uid = _auth.currentUser?.uid;
+    if (uid != null) {
+      try {
+        await _firestore.collection('users').doc(uid).update({
+          'isOnline': false,
+          'lastSeen': FieldValue.serverTimestamp(),
+        });
+      } catch (_) {}
+    }
+
+    try {
+      await _googleSignIn.disconnect();
+    } catch (_) {}
     await _googleSignIn.signOut();
     await _auth.signOut();
   }

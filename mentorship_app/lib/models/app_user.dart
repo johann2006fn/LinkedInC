@@ -19,7 +19,9 @@ class AppUser {
   final String? department;
   final String? year; // e.g. 'Class of 2026' or '3rd year'
   final int? yearsOfExperience; // Explicit years of experience integer
-  final int matchScore; // computed field, not stored
+  final List<String> savedMentors; // List of mentor IDs saved by the user
+  final int matchScore; // computed field or stored
+  final String? matchReason; // AI generated reason
 
   // Onboarding & preferences fields
   final bool isProfileComplete;
@@ -31,8 +33,21 @@ class AppUser {
   final bool acceptingMentees;
   final int maxMentees;
 
+  // Social proof
+  final List<String> reviews;
+
   // Vector embedding for semantic matchmaking
   final List<double>? profileEmbedding;
+
+  // Online presence
+  final bool isOnline;
+  final DateTime? lastSeen;
+  final String?
+  availabilityStatus; // e.g. 'Available tonight', 'Away till Monday'
+  final int sessionsCompleted;
+  final Map<String, int> endorsements;
+  final bool isVerifiedCollegeUser;
+  final String? identityId;
 
   AppUser({
     required this.id,
@@ -53,13 +68,23 @@ class AppUser {
     this.year,
     this.yearsOfExperience,
     this.matchScore = 0,
+    this.matchReason,
     this.isProfileComplete = false,
     this.gender,
     this.preferences,
     this.onboardingCompletedAt,
     this.acceptingMentees = false,
     this.maxMentees = 3,
+    this.reviews = const [],
     this.profileEmbedding,
+    this.isOnline = false,
+    this.lastSeen,
+    this.savedMentors = const [],
+    this.availabilityStatus,
+    this.sessionsCompleted = 0,
+    this.endorsements = const {},
+    this.isVerifiedCollegeUser = false,
+    this.identityId,
   });
 
   factory AppUser.fromFirestore(DocumentSnapshot doc) {
@@ -76,19 +101,40 @@ class AppUser {
       mentees: data['mentees'] as String?,
       collegeCode: data['collegeCode'] as String?,
       bio: data['bio'] as String?,
-      skills: (data['skills'] as List?)?.map((e) => e.toString()).toList() ?? [],
-      interests: (data['interests'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      skills:
+          (data['skills'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      interests:
+          (data['interests'] as List?)?.map((e) => e.toString()).toList() ?? [],
       goals: (data['goals'] as List?)?.map((e) => e.toString()).toList() ?? [],
       department: data['department'] as String?,
       year: data['year'] as String?,
       yearsOfExperience: data['yearsOfExperience'] as int?,
       isProfileComplete: data['isProfileComplete'] as bool? ?? false,
       gender: data['gender'] as String?,
-      preferences: data['preferences'] is Map ? Map<String, dynamic>.from(data['preferences'] as Map) : null,
-      onboardingCompletedAt: (data['onboardingCompletedAt'] as Timestamp?)?.toDate(),
+      preferences: data['preferences'] is Map
+          ? Map<String, dynamic>.from(data['preferences'] as Map)
+          : null,
+      onboardingCompletedAt: (data['onboardingCompletedAt'] as Timestamp?)
+          ?.toDate(),
       acceptingMentees: data['acceptingMentees'] as bool? ?? false,
       maxMentees: data['maxMentees'] as int? ?? 3,
-      profileEmbedding: (data['profileEmbedding'] as List?)?.map((e) => (e as num?)?.toDouble() ?? 0.0).toList(),
+      reviews:
+          (data['reviews'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      profileEmbedding: (data['profileEmbedding'] as List?)
+          ?.map((e) => (e as num?)?.toDouble() ?? 0.0)
+          .toList(),
+      isOnline: data['isOnline'] as bool? ?? false,
+      lastSeen: (data['lastSeen'] as Timestamp?)?.toDate(),
+      savedMentors:
+          (data['savedMentors'] as List?)?.map((e) => e.toString()).toList() ??
+          [],
+      availabilityStatus: data['availabilityStatus'] as String?,
+      sessionsCompleted: data['sessionsCompleted'] as int? ?? 0,
+      endorsements: Map<String, int>.from(data['endorsements'] ?? {}),
+      isVerifiedCollegeUser: data['isVerifiedCollegeUser'] as bool? ?? false,
+      identityId: data['identityId'] as String?,
+      matchScore: data['matchScore'] as int? ?? data['match_score'] as int? ?? 0,
+      matchReason: data['matchReason'] as String? ?? data['match_reason'] as String?,
     );
   }
 
@@ -106,19 +152,39 @@ class AppUser {
       mentees: data['mentees'] as String?,
       collegeCode: data['collegeCode'] as String?,
       bio: data['bio'] as String?,
-      skills: (data['skills'] as List?)?.map((e) => e.toString()).toList() ?? [],
-      interests: (data['interests'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      skills:
+          (data['skills'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      interests:
+          (data['interests'] as List?)?.map((e) => e.toString()).toList() ?? [],
       goals: (data['goals'] as List?)?.map((e) => e.toString()).toList() ?? [],
       department: data['department'] as String?,
       year: data['year'] as String?,
       yearsOfExperience: data['yearsOfExperience'] as int?,
       isProfileComplete: data['isProfileComplete'] as bool? ?? false,
       gender: data['gender'] as String?,
-      preferences: data['preferences'] is Map ? Map<String, dynamic>.from(data['preferences'] as Map) : null,
-      onboardingCompletedAt: (data['onboardingCompletedAt'] as Timestamp?)?.toDate(),
+      preferences: data['preferences'] is Map
+          ? Map<String, dynamic>.from(data['preferences'] as Map)
+          : null,
+      onboardingCompletedAt: (data['onboardingCompletedAt'] as Timestamp?)
+          ?.toDate(),
       acceptingMentees: data['acceptingMentees'] as bool? ?? false,
       maxMentees: data['maxMentees'] as int? ?? 3,
-      profileEmbedding: (data['profileEmbedding'] as List?)?.map((e) => (e as num?)?.toDouble() ?? 0.0).toList(),
+      reviews:
+          (data['reviews'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      profileEmbedding: (data['profileEmbedding'] as List?)
+          ?.map((e) => (e as num?)?.toDouble() ?? 0.0)
+          .toList(),
+      isOnline: data['isOnline'] as bool? ?? false,
+      lastSeen: (data['lastSeen'] as Timestamp?)?.toDate(),
+      savedMentors:
+          (data['savedMentors'] as List?)?.map((e) => e.toString()).toList() ??
+          [],
+      sessionsCompleted: data['sessionsCompleted'] as int? ?? 0,
+      endorsements: Map<String, int>.from(data['endorsements'] ?? {}),
+      isVerifiedCollegeUser: data['isVerifiedCollegeUser'] as bool? ?? false,
+      identityId: data['identityId'] as String?,
+      matchScore: data['matchScore'] as int? ?? data['match_score'] as int? ?? 0,
+      matchReason: data['matchReason'] as String? ?? data['match_reason'] as String?,
     );
   }
 
@@ -148,6 +214,16 @@ class AppUser {
           : null,
       'acceptingMentees': acceptingMentees,
       'maxMentees': maxMentees,
+      'isOnline': isOnline,
+      'lastSeen': lastSeen != null ? Timestamp.fromDate(lastSeen!) : null,
+      'savedMentors': savedMentors,
+      'availabilityStatus': availabilityStatus,
+      'sessionsCompleted': sessionsCompleted,
+      'endorsements': endorsements,
+      'isVerifiedCollegeUser': isVerifiedCollegeUser,
+      'identityId': identityId,
+      'matchScore': matchScore,
+      'matchReason': matchReason,
       // profileEmbedding is managed server-side by Cloud Functions
     };
   }
@@ -170,13 +246,23 @@ class AppUser {
     String? year,
     int? yearsOfExperience,
     int? matchScore,
+    String? matchReason,
     bool? isProfileComplete,
     String? gender,
     Map<String, dynamic>? preferences,
     DateTime? onboardingCompletedAt,
     bool? acceptingMentees,
     int? maxMentees,
+    List<String>? reviews,
     List<double>? profileEmbedding,
+    bool? isOnline,
+    DateTime? lastSeen,
+    List<String>? savedMentors,
+    String? availabilityStatus,
+    int? sessionsCompleted,
+    Map<String, int>? endorsements,
+    bool? isVerifiedCollegeUser,
+    String? identityId,
   }) {
     return AppUser(
       id: id,
@@ -197,14 +283,37 @@ class AppUser {
       year: year ?? this.year,
       yearsOfExperience: yearsOfExperience ?? this.yearsOfExperience,
       matchScore: matchScore ?? this.matchScore,
+      matchReason: matchReason ?? this.matchReason,
       isProfileComplete: isProfileComplete ?? this.isProfileComplete,
       gender: gender ?? this.gender,
       preferences: preferences ?? this.preferences,
-      onboardingCompletedAt: onboardingCompletedAt ?? this.onboardingCompletedAt,
+      onboardingCompletedAt:
+          onboardingCompletedAt ?? this.onboardingCompletedAt,
       acceptingMentees: acceptingMentees ?? this.acceptingMentees,
       maxMentees: maxMentees ?? this.maxMentees,
+      reviews: reviews ?? this.reviews,
       profileEmbedding: profileEmbedding ?? this.profileEmbedding,
+      isOnline: isOnline ?? this.isOnline,
+      lastSeen: lastSeen ?? this.lastSeen,
+      savedMentors: savedMentors ?? this.savedMentors,
+      availabilityStatus: availabilityStatus ?? this.availabilityStatus,
+      sessionsCompleted: sessionsCompleted ?? this.sessionsCompleted,
+      endorsements: endorsements ?? this.endorsements,
+      isVerifiedCollegeUser:
+          isVerifiedCollegeUser ?? this.isVerifiedCollegeUser,
+      identityId: identityId ?? this.identityId,
     );
+  }
+
+  /// Returns total number of endorsements across all tags.
+  int get totalEndorsements {
+    return endorsements.values.fold(0, (acc, val) => acc + val);
+  }
+
+  /// Returns the tag with the most endorsements.
+  String? get topEndorsementTag {
+    if (endorsements.isEmpty) return null;
+    return endorsements.entries.reduce((a, b) => a.value > b.value ? a : b).key;
   }
 
   /// Returns a text summary for the Gemini matching prompt.

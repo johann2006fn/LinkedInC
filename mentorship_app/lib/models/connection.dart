@@ -38,10 +38,16 @@ class MentorshipConnection {
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       mentorName: data['mentorName'] as String? ?? '',
       mentorSubtitle: data['mentorSubtitle'] as String? ?? '',
-      mentorTags: (data['mentorTags'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      mentorTags:
+          (data['mentorTags'] as List?)?.map((e) => e.toString()).toList() ??
+          [],
       studentName: data['studentName'] as String? ?? '',
-      otherUserName: data['otherUserName'] as String? ?? data['mentorName'] as String? ?? '',
-      otherUserId: data['otherUserId'] as String? ?? data['mentorId'] as String? ?? '',
+      otherUserName:
+          data['otherUserName'] as String? ??
+          data['mentorName'] as String? ??
+          '',
+      otherUserId:
+          data['otherUserId'] as String? ?? data['mentorId'] as String? ?? '',
     );
   }
 

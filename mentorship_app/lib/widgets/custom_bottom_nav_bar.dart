@@ -20,14 +20,26 @@ class CustomBottomNavBar extends StatelessWidget {
     // ── Tab definitions ────────────────────────────────────
     final menteeItems = [
       _NavItem(Icons.explore_rounded, Icons.explore_outlined, 'Explore'),
-      _NavItem(Icons.chat_bubble_rounded, Icons.chat_bubble_outline_rounded, 'Chat'),
+      _NavItem(
+        Icons.chat_bubble_rounded,
+        Icons.chat_bubble_outline_rounded,
+        'Chat',
+      ),
       _NavItem(Icons.people_rounded, Icons.people_outline_rounded, 'Network'),
       _NavItem(Icons.person_rounded, Icons.person_outline_rounded, 'Profile'),
     ];
     final mentorItems = [
       _NavItem(Icons.dashboard_rounded, Icons.dashboard_outlined, 'Dashboard'),
-      _NavItem(Icons.chat_bubble_rounded, Icons.chat_bubble_outline_rounded, 'Chat'),
-      _NavItem(Icons.calendar_month_rounded, Icons.calendar_month_outlined, 'Calendar'),
+      _NavItem(
+        Icons.chat_bubble_rounded,
+        Icons.chat_bubble_outline_rounded,
+        'Chat',
+      ),
+      _NavItem(
+        Icons.calendar_month_rounded,
+        Icons.calendar_month_outlined,
+        'Calendar',
+      ),
       _NavItem(Icons.person_rounded, Icons.person_outline_rounded, 'Profile'),
     ];
     final items = isMentor ? mentorItems : menteeItems;
@@ -103,8 +115,7 @@ class CustomBottomNavBar extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: 10,
-                fontWeight:
-                    isSelected ? FontWeight.bold : FontWeight.normal,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 color: isSelected
                     ? AntigravityTheme.electricPurple
                     : Colors.white38,

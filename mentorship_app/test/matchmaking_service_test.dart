@@ -27,9 +27,18 @@ void main() {
     test('zero vector → returns 0.0 (no divide-by-zero crash)', () {
       final zero = [0.0, 0.0, 0.0];
       final vec = [1.0, 2.0, 3.0];
-      expect(MatchmakingService.calculateCosineSimilarity(zero, vec), equals(0.0));
-      expect(MatchmakingService.calculateCosineSimilarity(vec, zero), equals(0.0));
-      expect(MatchmakingService.calculateCosineSimilarity(zero, zero), equals(0.0));
+      expect(
+        MatchmakingService.calculateCosineSimilarity(zero, vec),
+        equals(0.0),
+      );
+      expect(
+        MatchmakingService.calculateCosineSimilarity(vec, zero),
+        equals(0.0),
+      );
+      expect(
+        MatchmakingService.calculateCosineSimilarity(zero, zero),
+        equals(0.0),
+      );
     });
 
     test('known vectors → correct dot-product-over-magnitude result', () {

@@ -5,7 +5,10 @@ import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../theme/antigravity_theme.dart';
 import '../providers/app_providers.dart';
+import '../widgets/notification_sheet.dart';
 import '../models/chat.dart';
+import '../models/app_user.dart';
+import '../widgets/user_avatar.dart';
 
 class ChatListScreen extends ConsumerStatefulWidget {
   const ChatListScreen({super.key});
@@ -15,28 +18,23 @@ class ChatListScreen extends ConsumerStatefulWidget {
 }
 
 class _ChatListScreenState extends ConsumerState<ChatListScreen> {
-  bool _isSearching = false;
-  final TextEditingController _searchController = TextEditingController();
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final chats = ref.watch(userChatsProvider);
     final currentUserAsync = ref.watch(currentUserProvider);
     final currentUser = currentUserAsync.value;
-    
+
     if (currentUser == null) {
       return const Scaffold(
         backgroundColor: Color(0xFF0D0B14),
-        body: Center(child: CircularProgressIndicator(color: AntigravityTheme.electricPurple)),
+        body: Center(
+          child: CircularProgressIndicator(
+            color: AntigravityTheme.electricPurple,
+          ),
+        ),
       );
     }
-    
+
     final isMentor = currentUser.role == 'mentor';
     final headerText = isMentor ? 'NEW STUDENTS' : 'NEW MENTORS';
 
@@ -45,65 +43,38 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF0D0B14),
         elevation: 0,
-        automaticallyImplyLeading: false, // Replaces dead hamburger menu
-        title: _isSearching
-            ? TextField(
-                controller: _searchController,
-                autofocus: true,
-                style: const TextStyle(color: Colors.white),
-                decoration: const InputDecoration(
-                  hintText: 'Search active chats...',
-                  hintStyle: TextStyle(color: Colors.white54),
-                  border: InputBorder.none,
-                ),
-                onChanged: (_) => setState(() {}),
-              )
-            : const Text(
-                'Connections',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 22),
-              ),
-        actions: [
-          IconButton(
-            icon: Icon(_isSearching ? Icons.close : Icons.search, color: Colors.white),
-            onPressed: () {
-              setState(() {
-                if (_isSearching) {
-                  _isSearching = false;
-                  _searchController.clear();
-                } else {
-                  _isSearching = true;
-                }
-              });
-            },
+        automaticallyImplyLeading: false,
+        title: const Text(
+          'Connections',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
           ),
-          IconButton(
-            icon: const Icon(Icons.notifications_none, color: Colors.white),
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Notifications empty'),
-                  backgroundColor: AntigravityTheme.electricPurple,
-                ),
-              );
-            },
+        ),
+        actions: [
+          NotificationSheet.bellIcon(
+            userId: currentUser.id,
+            onPressed: () => NotificationSheet.show(context, currentUser.id),
           ),
         ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── NEW MENTORS/STUDENTS StreamBuilder ─────────────────────────────
           StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('connections')
                 .where('status', isEqualTo: 'accepted')
-                .where(Filter.or(
-                   Filter('participants', arrayContains: currentUser.id),
-                   Filter('studentId', isEqualTo: currentUser.id),
-                   Filter('mentorId', isEqualTo: currentUser.id),
-                ))
+                .where(isMentor ? 'mentorId' : 'studentId', isEqualTo: currentUser.id)
                 .snapshots(),
             builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text('Error loading connections: ${snapshot.error}', style: const TextStyle(color: Colors.redAccent, fontSize: 12)),
+                );
+              }
               if (!snapshot.hasData) return const SizedBox.shrink();
               final docs = snapshot.data!.docs;
               if (docs.isEmpty) return const SizedBox.shrink();
@@ -123,51 +94,111 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 90,
+                  Container(
+                    height: 110,
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.03),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+                    ),
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
                       itemCount: docs.length,
                       itemBuilder: (context, index) {
                         final data = docs[index].data() as Map<String, dynamic>;
-                        
-                        // Try to determine the other user's name across various possible field formats
-                        final studentName = data['studentName'] as String? ?? '';
-                        final mentorName = data['mentorName'] as String? ?? '';
-                        
-                        String displayName = isMentor ? studentName : mentorName;
-                        if (displayName.isEmpty) {
-                          displayName = data['otherUserName'] as String? ?? '?';
-                        }
-                        
-                        return Padding(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: 52,
-                                height: 52,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                      color: AntigravityTheme.electricPurple, width: 2.5),
-                                ),
-                                child: CircleAvatar(
-                                  backgroundColor: const Color(0xFF2D2040),
-                                  child: Text(
-                                    displayName.isNotEmpty ? displayName[0].toUpperCase() : '?',
-                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        final otherUserId = isMentor
+                            ? (data['studentId'] as String? ?? '')
+                            : (data['mentorId'] as String? ?? '');
+
+                        return Consumer(
+                          builder: (context, ref, child) {
+                            final otherUserAsync = ref.watch(otherUserProfileProvider(otherUserId));
+
+                            return otherUserAsync.when(
+                              data: (user) {
+                                final displayName = user?.name ?? 
+                                    (isMentor ? (data['studentName'] as String? ?? 'Student') : (data['mentorName'] as String? ?? 'Mentor'));
+                                
+                                return Padding(
+                                  padding: const EdgeInsets.only(right: 16),
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      try {
+                                        if (otherUserId.isEmpty) return;
+
+                                        String? chatId = data['chatId'] as String?;
+                                        if (chatId == null || chatId.isEmpty) {
+                                          chatId = await ref
+                                              .read(chatRepositoryProvider)
+                                              .getOrCreateChatId(
+                                                currentUser.id,
+                                                otherUserId,
+                                              );
+                                        }
+
+                                        if (context.mounted) {
+                                          context.push('/chat/$chatId');
+                                        }
+                                      } catch (e) {
+                                        debugPrint("NAVIGATION_DEBUG: $e");
+                                      }
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: 62,
+                                          height: 62,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: AntigravityTheme.electricPurple.withValues(alpha: 0.4),
+                                              width: 2,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: AntigravityTheme.electricPurple.withValues(alpha: 0.2),
+                                                blurRadius: 8,
+                                                spreadRadius: -2,
+                                              ),
+                                            ],
+                                          ),
+                                          child: user != null 
+                                              ? UserAvatar(user: user, radius: 28)
+                                              : CircleAvatar(
+                                                  backgroundColor: AntigravityTheme.midnightBlue.withValues(alpha: 0.8),
+                                                  child: Icon(
+                                                    isMentor ? Icons.school_rounded : Icons.engineering_rounded,
+                                                    color: Colors.white,
+                                                    size: 26,
+                                                  ),
+                                                ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          displayName.split(' ').first,
+                                          style: const TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
+                                );
+                              },
+                              loading: () => const Padding(
+                                padding: EdgeInsets.only(right: 16),
+                                child: SizedBox(
+                                  width: 58,
+                                  child: Center(child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))),
                                 ),
                               ),
-                              const SizedBox(height: 5),
-                              Text(
-                                displayName.split(' ').first,
-                                style: const TextStyle(color: Colors.white70, fontSize: 12),
-                              ),
-                            ],
-                          ),
+                              error: (e, _) => const SizedBox.shrink(),
+                            );
+                          },
                         );
                       },
                     ),
@@ -194,24 +225,25 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
           Expanded(
             child: chats.when(
               data: (chatList) {
-                final query = _searchController.text.trim().toLowerCase();
-                final filteredChats = query.isEmpty
-                    ? chatList
-                    : chatList.where((c) => c.otherUserName.toLowerCase().contains(query)).toList();
-
-                if (filteredChats.isEmpty) {
+                if (chatList.isEmpty) {
                   return Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.forum_outlined, size: 60, color: Colors.white24),
-                        const SizedBox(height: 16),
+                      children: const [
+                        Icon(
+                          Icons.forum_outlined,
+                          size: 60,
+                          color: Colors.white24,
+                        ),
+                        SizedBox(height: 16),
                         Text(
-                          query.isNotEmpty 
-                              ? 'No chats found matching "$query"'
-                              : 'No active connections yet.\nCheck your pending requests!',
+                          'No active connections yet.\nCheck your pending requests!',
                           textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white54, fontSize: 16, height: 1.4),
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontSize: 16,
+                            height: 1.4,
+                          ),
                         ),
                       ],
                     ),
@@ -219,14 +251,21 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                 }
                 return ListView.builder(
                   padding: const EdgeInsets.only(bottom: 120),
-                  itemCount: filteredChats.length,
-                  itemBuilder: (_, i) => _buildChatTile(context, filteredChats[i], i),
+                  itemCount: chatList.length,
+                  itemBuilder: (_, i) =>
+                      _buildChatTile(context, chatList[i], i),
                 );
               },
-              loading: () => const Center(child: CircularProgressIndicator(color: AntigravityTheme.electricPurple)),
+              loading: () => const Center(
+                child: CircularProgressIndicator(
+                  color: AntigravityTheme.electricPurple,
+                ),
+              ),
               error: (e, _) => Center(
-                child: Text('Error: $e',
-                    style: const TextStyle(color: Colors.redAccent, fontSize: 13)),
+                child: Text(
+                  'Error: $e',
+                  style: const TextStyle(color: Colors.redAccent, fontSize: 13),
+                ),
               ),
             ),
           ),
@@ -237,29 +276,92 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
 
   Widget _buildChatTile(BuildContext context, Chat chat, int index) {
     final timeStr = _formatTime(chat.lastUpdated);
-    final unread = 0; // Removed fake hardcoded dummy unread badge metric
 
+    // ── FIX: Use StreamBuilder with otherUserProfileProvider to avoid
+    // the "Unknown" / hat-icon flash caused by FutureBuilder re-firing.
+    return Consumer(
+      builder: (context, ref, child) {
+        final otherUserAsync = ref.watch(otherUserProfileProvider(chat.otherUserId));
+
+        return otherUserAsync.when(
+          data: (otherUser) => _buildChatTileContent(
+            context: context,
+            chat: chat,
+            otherUser: otherUser,
+            displayName: otherUser?.name ?? (chat.otherUserName.isNotEmpty ? chat.otherUserName : 'User'),
+            timeStr: timeStr,
+          ),
+          loading: () => _buildChatTileContent(
+            context: context,
+            chat: chat,
+            otherUser: null,
+            // Use cached otherUserName while loading to prevent flash
+            displayName: chat.otherUserName.isNotEmpty ? chat.otherUserName : 'Loading...',
+            timeStr: timeStr,
+            isLoading: true,
+          ),
+          error: (_, _) => _buildChatTileContent(
+            context: context,
+            chat: chat,
+            otherUser: null,
+            displayName: chat.otherUserName.isNotEmpty ? chat.otherUserName : 'User',
+            timeStr: timeStr,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildChatTileContent({
+    required BuildContext context,
+    required Chat chat,
+    required AppUser? otherUser,
+    required String displayName,
+    required String timeStr,
+    bool isLoading = false,
+  }) {
     return InkWell(
-      onTap: () => context.push('/chat/detail', extra: chat),
+      onTap: () {
+        try {
+          context.push('/chat/${chat.id}', extra: chat);
+        } catch (e) {
+          debugPrint("NAVIGATION_DEBUG: $e");
+        }
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Row(
           children: [
             // Avatar
-            Stack(
-              children: [
-                CircleAvatar(
-                  radius: 26,
-                  backgroundColor: const Color(0xFF2D2040),
-                  child: Text(
-                    chat.otherUserName.isNotEmpty
-                        ? chat.otherUserName[0].toUpperCase()
-                        : '?',
-                    style: const TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
+            Container(
+              padding: const EdgeInsets.all(2),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AntigravityTheme.electricPurple.withValues(alpha: 0.3),
+                  width: 1.5,
                 ),
-              ],
+              ),
+              child: otherUser != null
+                  ? UserAvatar(user: otherUser, radius: 28)
+                  : CircleAvatar(
+                      radius: 28,
+                      backgroundColor: const Color(0xFF2D2040),
+                      child: isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AntigravityTheme.electricPurple,
+                              ),
+                            )
+                          : const Icon(
+                              Icons.person_outline_rounded,
+                              color: Colors.white54,
+                              size: 22,
+                            ),
+                    ),
             ),
             const SizedBox(width: 14),
             // Content
@@ -270,56 +372,39 @@ class _ChatListScreenState extends ConsumerState<ChatListScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        chat.otherUserName,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Text(
+                          displayName,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
+                      const SizedBox(width: 8),
                       Text(
                         timeStr,
-                        style: TextStyle(
-                          color: unread > 0 ? AntigravityTheme.electricPurple : Colors.white54,
+                        style: const TextStyle(
+                          color: Colors.white54,
                           fontSize: 12,
-                          fontWeight: unread > 0 ? FontWeight.bold : FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          chat.lastMessage.isNotEmpty ? chat.lastMessage : 'Tap to start chatting',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: unread > 0 ? Colors.white : Colors.white54,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
-                      if (unread > 0)
-                        Container(
-                          margin: const EdgeInsets.only(left: 8),
-                          padding: const EdgeInsets.all(6),
-                          decoration: const BoxDecoration(
-                            color: AntigravityTheme.electricPurple,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Text(
-                            unread.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                    ],
+                  Text(
+                    chat.lastMessage.isNotEmpty
+                        ? chat.lastMessage
+                        : 'Tap to start chatting',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white54,
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),

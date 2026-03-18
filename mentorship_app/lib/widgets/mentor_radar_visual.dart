@@ -4,25 +4,23 @@ import '../theme/antigravity_theme.dart';
 
 class MentorRadarVisual extends StatefulWidget {
   final int matchCount;
-  
-  const MentorRadarVisual({
-    super.key,
-    required this.matchCount,
-  });
+
+  const MentorRadarVisual({super.key, required this.matchCount});
 
   @override
   State<MentorRadarVisual> createState() => _MentorRadarVisualState();
 }
 
-class _MentorRadarVisualState extends State<MentorRadarVisual> with SingleTickerProviderStateMixin {
+class _MentorRadarVisualState extends State<MentorRadarVisual>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-       vsync: this,
-       duration: const Duration(seconds: 20),
+      vsync: this,
+      duration: const Duration(seconds: 20),
     )..repeat();
   }
 
@@ -40,7 +38,7 @@ class _MentorRadarVisualState extends State<MentorRadarVisual> with SingleTicker
       decoration: BoxDecoration(
         color: AntigravityTheme.midnightBlue,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Stack(
         alignment: Alignment.center,
@@ -49,7 +47,7 @@ class _MentorRadarVisualState extends State<MentorRadarVisual> with SingleTicker
           _buildConcentricCircle(240),
           _buildConcentricCircle(170),
           _buildConcentricCircle(100),
-          
+
           // Center Text
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -89,10 +87,10 @@ class _MentorRadarVisualState extends State<MentorRadarVisual> with SingleTicker
             builder: (context, child) {
               return Stack(
                 children: [
-                   _buildOrbitingAvatar(0, 0.2, 120, 'assets/avatar1.png'),
-                   _buildOrbitingAvatar(1, 0.5, 85, 'assets/avatar2.png'),
-                   _buildOrbitingAvatar(2, 0.8, 120, 'assets/avatar3.png'),
-                   _buildOrbitingAvatar(3, 0.05, 120, 'assets/avatar4.png'),
+                  _buildOrbitingAvatar(0, 0.2, 120, 'assets/avatar1.png'),
+                  _buildOrbitingAvatar(1, 0.5, 85, 'assets/avatar2.png'),
+                  _buildOrbitingAvatar(2, 0.8, 120, 'assets/avatar3.png'),
+                  _buildOrbitingAvatar(3, 0.05, 120, 'assets/avatar4.png'),
                 ],
               );
             },
@@ -109,17 +107,24 @@ class _MentorRadarVisualState extends State<MentorRadarVisual> with SingleTicker
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
-          color: AntigravityTheme.electricPurple.withOpacity(0.15),
+          color: AntigravityTheme.electricPurple.withValues(alpha: 0.15),
           width: 1,
         ),
       ),
     );
   }
 
-  Widget _buildOrbitingAvatar(int index, double startingAnglePhase, double radius, String assetPath) {
+  Widget _buildOrbitingAvatar(
+    int index,
+    double startingAnglePhase,
+    double radius,
+    String assetPath,
+  ) {
     // Generate an angle that changes over time based on the controller
-    final double angle = (startingAnglePhase * 2 * pi) + (_controller.value * 2 * pi * (index % 2 == 0 ? 1 : -1));
-    
+    final double angle =
+        (startingAnglePhase * 2 * pi) +
+        (_controller.value * 2 * pi * (index % 2 == 0 ? 1 : -1));
+
     // Offset from center
     final double x = radius * cos(angle);
     final double y = radius * sin(angle);
@@ -134,13 +139,16 @@ class _MentorRadarVisualState extends State<MentorRadarVisual> with SingleTicker
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: AntigravityTheme.midnightBlue,
-            border: Border.all(color: AntigravityTheme.electricPurple.withOpacity(0.5), width: 2),
+            border: Border.all(
+              color: AntigravityTheme.electricPurple.withValues(alpha: 0.5),
+              width: 2,
+            ),
             boxShadow: [
               BoxShadow(
-                color: AntigravityTheme.electricPurple.withOpacity(0.3),
+                color: AntigravityTheme.electricPurple.withValues(alpha: 0.3),
                 blurRadius: 10,
                 spreadRadius: 2,
-              )
+              ),
             ],
           ),
           child: const Icon(Icons.person, color: Colors.white, size: 20),

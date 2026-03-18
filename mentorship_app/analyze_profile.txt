@@ -1,0 +1,758 @@
+Analyzing mentorship_app...                                     
+
+   info - Use interpolation to compose strings and values - fix.dart:26:19 - prefer_interpolation_to_compose_strings
+   info - Use interpolation to compose strings and values - fix.dart:57:22 - prefer_interpolation_to_compose_strings
+   info - Don't invoke 'print' in production code - fix.dart:65:7 - avoid_print
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\auth_screen.dart:1:8 - unnecessary_import
+   info - Don't use 'BuildContext's across async gaps - lib\screens\auth_screen.dart:40:11 - use_build_context_synchronously
+  error - Missing concrete implementation of 'abstract class State<T extends StatefulWidget> with Diagnosticable.build' - lib\screens\home_screen.dart:18:7 - non_abstract_class_inherits_abstract_member
+   info - An uninitialized field should have an explicit type annotation - lib\screens\home_screen.dart:20:9 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\home_screen.dart:20:9 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\home_screen.dart:20:9 - expected_token
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\home_screen.dart:20:9 - missing_const_final_var_or_type
+  error - Expected a class member - lib\screens\home_screen.dart:20:14 - expected_class_member
+   info - Missing type annotation - lib\screens\home_screen.dart:20:16 - strict_top_level_inference
+   info - The variable name 'SingleChildScrollView' isn't a lowerCamelCase identifier - lib\screens\home_screen.dart:20:16 - non_constant_identifier_names
+   info - Missing type annotation - lib\screens\home_screen.dart:21:11 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\screens\home_screen.dart:21:18 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\screens\home_screen.dart:21:18 - obsolete_colon_for_default_value
+   info - Missing type annotation - lib\screens\home_screen.dart:22:11 - strict_top_level_inference
+  error - Named parameters must be enclosed in curly braces ('{' and '}') - lib\screens\home_screen.dart:22:16 - named_parameter_outside_group
+  error - Using a colon as the separator before a default value is no longer supported - lib\screens\home_screen.dart:22:16 - obsolete_colon_for_default_value
+  error - The default value of an optional parameter must be constant - lib\screens\home_screen.dart:22:18 - non_constant_default_value
+  error - Undefined name 'isMentee' - lib\screens\home_screen.dart:112:24 - undefined_identifier
+  error - Undefined name 'isMentee' - lib\screens\home_screen.dart:128:15 - undefined_identifier
+  error - Undefined name 'hasTags' - lib\screens\home_screen.dart:128:28 - undefined_identifier
+  error - Undefined name 'isMentee' - lib\screens\home_screen.dart:160:21 - undefined_identifier
+  error - Undefined name 'mentors' - lib\screens\home_screen.dart:168:25 - undefined_identifier
+  error - A function body must be provided - lib\screens\home_screen.dart:193:10 - missing_function_body
+  error - Expected a class member - lib\screens\home_screen.dart:193:10 - expected_class_member
+  error - Expected a class member - lib\screens\home_screen.dart:194:7 - expected_class_member
+  error - Expected a class member - lib\screens\home_screen.dart:194:8 - expected_class_member
+  error - Expected a class member - lib\screens\home_screen.dart:195:5 - expected_class_member
+  error - Expected a class member - lib\screens\home_screen.dart:195:6 - expected_class_member
+  error - Undefined name '_isExpanded' - lib\screens\home_screen.dart:199:28 - undefined_identifier
+  error - Undefined name '_isExpanded' - lib\screens\home_screen.dart:217:28 - undefined_identifier
+  error - Expected a method, getter, setter or operator declaration - lib\screens\home_screen.dart:289:1 - expected_executable
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\mentee_onboarding_screen.dart:1:8 - unnecessary_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\mentor_dashboard_screen.dart:2:8 - unnecessary_import
+warning - The value of the local variable 'mentorName' isn't used - lib\screens\mentor_dashboard_screen.dart:36:11 - unused_local_variable
+   info - The parameter name 'count' matches a visible type name - lib\screens\mentor_dashboard_screen.dart:105:28 - avoid_types_as_parameter_names
+   info - The parameter name 'count' matches a visible type name - lib\screens\mentor_dashboard_screen.dart:111:28 - avoid_types_as_parameter_names
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\mentor_onboarding_screen.dart:1:8 - unnecessary_import
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\preferences_screen.dart:1:8 - unnecessary_import
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\screens\profile_screen.dart:312:9 - deprecated_member_use
+warning - This class (or a class that this class inherits from) is marked as '@immutable', but one or more of its instance fields aren't final: _EditProfileSheet.n, _EditProfileSheet.n, _EditProfileSheet.n, _EditProfileSheet.n, _EditProfileSheet.n, _EditProfileSheet.n - lib\screens\profile_screen.dart:398:7 - must_be_immutable
+  error - Expected a class member - lib\screens\profile_screen.dart:398:57 - expected_class_member
+   info - An uninitialized field should have an explicit type annotation - lib\screens\profile_screen.dart:398:58 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:58 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:58 - expected_token
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:58 - missing_const_final_var_or_type
+  error - Expected a class member - lib\screens\profile_screen.dart:398:80 - expected_class_member
+   info - An uninitialized field should have an explicit type annotation - lib\screens\profile_screen.dart:398:81 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:81 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:81 - expected_token
+  error - The name 'n' is already defined - lib\screens\profile_screen.dart:398:81 - duplicate_definition
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:81 - missing_const_final_var_or_type
+  error - Expected a class member - lib\screens\profile_screen.dart:398:82 - expected_class_member
+   info - An uninitialized field should have an explicit type annotation - lib\screens\profile_screen.dart:398:83 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:83 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:83 - expected_token
+  error - The name 'n' is already defined - lib\screens\profile_screen.dart:398:83 - duplicate_definition
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:83 - missing_const_final_var_or_type
+  error - Can't define a const constructor for a class with non-final fields - lib\screens\profile_screen.dart:398:92 - const_constructor_with_non_final_field
+  error - Expected a class member - lib\screens\profile_screen.dart:398:132 - expected_class_member
+   info - An uninitialized field should have an explicit type annotation - lib\screens\profile_screen.dart:398:133 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:133 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:133 - expected_token
+  error - The name 'n' is already defined - lib\screens\profile_screen.dart:398:133 - duplicate_definition
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:133 - missing_const_final_var_or_type
+  error - Expected a class member - lib\screens\profile_screen.dart:398:134 - expected_class_member
+   info - An uninitialized field should have an explicit type annotation - lib\screens\profile_screen.dart:398:135 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:135 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:135 - expected_token
+  error - The name 'n' is already defined - lib\screens\profile_screen.dart:398:135 - duplicate_definition
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:135 - missing_const_final_var_or_type
+  error - Expected a class member - lib\screens\profile_screen.dart:398:147 - expected_class_member
+  error - n isn't a type - lib\screens\profile_screen.dart:398:148 - not_a_type
+   info - The variable name 'ConsumerState' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:151 - non_constant_identifier_names
+  error - Methods must have an explicit list of parameters - lib\screens\profile_screen.dart:398:151 - missing_method_parameters
+   info - The type parameter name '_EditProfileSheet' matches a visible type name - lib\screens\profile_screen.dart:398:165 - avoid_types_as_parameter_names
+   info - The member 'createState' overrides an inherited member but isn't annotated with '@override' - lib\screens\profile_screen.dart:398:184 - annotate_overrides
+  error - A function body must be provided - lib\screens\profile_screen.dart:398:184 - missing_function_body
+   info - Don't put any logic in 'createState' - lib\screens\profile_screen.dart:398:201 - no_logic_in_create_state
+  error - Expected a class member - lib\screens\profile_screen.dart:398:226 - expected_class_member
+   info - An uninitialized field should have an explicit type annotation - lib\screens\profile_screen.dart:398:227 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:227 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:227 - expected_token
+  error - The name 'n' is already defined - lib\screens\profile_screen.dart:398:227 - duplicate_definition
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:227 - missing_const_final_var_or_type
+  error - Expected a method, getter, setter or operator declaration - lib\screens\profile_screen.dart:398:229 - expected_executable
+   info - An uninitialized variable should have an explicit type annotation - lib\screens\profile_screen.dart:398:230 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:230 - strict_top_level_inference
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:230 - expected_token
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:230 - missing_const_final_var_or_type
+  error - Expected a method, getter, setter or operator declaration - lib\screens\profile_screen.dart:398:231 - expected_executable
+  error - Undefined class 'nclass' - lib\screens\profile_screen.dart:398:232 - undefined_class
+   info - The variable name '_EditProfileSheetState' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:239 - non_constant_identifier_names
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:239 - expected_token
+   info - An uninitialized variable should have an explicit type annotation - lib\screens\profile_screen.dart:398:262 - prefer_typing_uninitialized_variables
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:262 - strict_top_level_inference
+  error - 'extends' can't be used as an identifier because it's a keyword - lib\screens\profile_screen.dart:398:262 - expected_identifier_but_got_keyword
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:262 - expected_token
+  error - Variables must be declared using the keywords 'const', 'final', 'var' or a type name - lib\screens\profile_screen.dart:398:262 - missing_const_final_var_or_type
+   info - Missing type annotation - lib\screens\profile_screen.dart:398:270 - strict_top_level_inference
+   info - The variable name 'ConsumerState' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:270 - non_constant_identifier_names
+warning - The value of the local variable '<unnamed>' isn't used - lib\screens\profile_screen.dart:398:270 - unused_local_variable
+  error - Functions must have an explicit list of parameters - lib\screens\profile_screen.dart:398:270 - missing_function_parameters
+   info - The type parameter name '_EditProfileSheet' matches a visible type name - lib\screens\profile_screen.dart:398:284 - avoid_types_as_parameter_names
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:304 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:304 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:305 - not_a_type
+warning - The value of the local variable 'late' isn't used - lib\screens\profile_screen.dart:398:308 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:308 - expected_token
+   info - The local variable '_nameController' starts with an underscore - lib\screens\profile_screen.dart:398:335 - no_leading_underscores_for_local_identifiers
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:351 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:351 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:352 - not_a_type
+warning - The value of the local variable 'late' isn't used - lib\screens\profile_screen.dart:398:355 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:355 - expected_token
+  error - The name 'late' is already defined - lib\screens\profile_screen.dart:398:355 - duplicate_definition
+   info - The local variable '_collegeController' starts with an underscore - lib\screens\profile_screen.dart:398:382 - no_leading_underscores_for_local_identifiers
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:401 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:401 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:402 - not_a_type
+warning - The value of the local variable 'late' isn't used - lib\screens\profile_screen.dart:398:405 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:405 - expected_token
+  error - The name 'late' is already defined - lib\screens\profile_screen.dart:398:405 - duplicate_definition
+   info - The local variable '_bioController' starts with an underscore - lib\screens\profile_screen.dart:398:432 - no_leading_underscores_for_local_identifiers
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:447 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:447 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:448 - not_a_type
+warning - The value of the local variable 'late' isn't used - lib\screens\profile_screen.dart:398:451 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:451 - expected_token
+  error - The name 'late' is already defined - lib\screens\profile_screen.dart:398:451 - duplicate_definition
+   info - The local variable '_experienceController' starts with an underscore - lib\screens\profile_screen.dart:398:478 - no_leading_underscores_for_local_identifiers
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:500 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:500 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:501 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:504 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:504 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:505 - not_a_type
+warning - The value of the local variable 'late' isn't used - lib\screens\profile_screen.dart:398:508 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:508 - expected_token
+  error - The name 'late' is already defined - lib\screens\profile_screen.dart:398:508 - duplicate_definition
+   info - The local variable '_tags' starts with an underscore - lib\screens\profile_screen.dart:398:526 - no_leading_underscores_for_local_identifiers
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:532 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:532 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:533 - not_a_type
+warning - The value of the local variable 'late' isn't used - lib\screens\profile_screen.dart:398:536 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:536 - expected_token
+  error - The name 'late' is already defined - lib\screens\profile_screen.dart:398:536 - duplicate_definition
+  error - Local variable 'bool' can't be referenced before it is declared - lib\screens\profile_screen.dart:398:541 - referenced_before_declaration
+   info - The local variable '_acceptingMentees' starts with an underscore - lib\screens\profile_screen.dart:398:546 - no_leading_underscores_for_local_identifiers
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:564 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:564 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:565 - expected_token
+   info - The local variable '_tagController' starts with an underscore - lib\screens\profile_screen.dart:398:596 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_tagController' isn't used - lib\screens\profile_screen.dart:398:596 - unused_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:637 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:637 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:638 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:641 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:641 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:642 - not_a_type
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:645 - expected_token
+  error - Undefined name '_isSaving' - lib\screens\profile_screen.dart:398:650 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:668 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:668 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:669 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:670 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:670 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:671 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:683 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:683 - expected_token
+   info - An uninitialized variable should have an explicit type annotation - lib\screens\profile_screen.dart:398:684 - prefer_typing_uninitialized_variables
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:684 - expected_token
+warning - The declaration 'initState' isn't referenced - lib\screens\profile_screen.dart:398:692 - unused_element
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:705 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:705 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:706 - not_a_type
+warning - The value of the local variable 'super' isn't used - lib\screens\profile_screen.dart:398:711 - unused_local_variable
+  error - 'super' can't be used as an identifier because it's a keyword - lib\screens\profile_screen.dart:398:711 - expected_identifier_but_got_keyword
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:711 - expected_token
+  error - The static method or constructor 'initState' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:717 - dot_shorthand_undefined_member
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:729 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:729 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:730 - not_a_type
+   info - The local variable '_nameController' starts with an underscore - lib\screens\profile_screen.dart:398:735 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_nameController' isn't used - lib\screens\profile_screen.dart:398:735 - unused_local_variable
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:781 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:799 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:799 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:800 - not_a_type
+   info - The local variable '_collegeController' starts with an underscore - lib\screens\profile_screen.dart:398:805 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_collegeController' isn't used - lib\screens\profile_screen.dart:398:805 - unused_local_variable
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:854 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:882 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:882 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:883 - not_a_type
+   info - The local variable '_bioController' starts with an underscore - lib\screens\profile_screen.dart:398:888 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_bioController' isn't used - lib\screens\profile_screen.dart:398:888 - unused_local_variable
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:933 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:956 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:956 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:957 - not_a_type
+   info - The local variable '_experienceController' starts with an underscore - lib\screens\profile_screen.dart:398:962 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_experienceController' isn't used - lib\screens\profile_screen.dart:398:962 - unused_local_variable
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:1014 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1063 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1063 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1064 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1069 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1069 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1070 - not_a_type
+   info - The local variable '_tags' starts with an underscore - lib\screens\profile_screen.dart:398:1075 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_tags' isn't used - lib\screens\profile_screen.dart:398:1075 - unused_local_variable
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:1093 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1111 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1111 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1112 - not_a_type
+   info - The local variable '_acceptingMentees' starts with an underscore - lib\screens\profile_screen.dart:398:1117 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_acceptingMentees' isn't used - lib\screens\profile_screen.dart:398:1117 - unused_local_variable
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:1137 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1166 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1166 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1167 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1171 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1171 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1172 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1175 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1175 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1176 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1188 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1188 - expected_token
+   info - An uninitialized variable should have an explicit type annotation - lib\screens\profile_screen.dart:398:1189 - prefer_typing_uninitialized_variables
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1189 - expected_token
+warning - The declaration 'dispose' isn't referenced - lib\screens\profile_screen.dart:398:1197 - unused_element
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1208 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1208 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1209 - not_a_type
+   info - The local variable '_nameController' starts with an underscore - lib\screens\profile_screen.dart:398:1214 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_nameController' isn't used - lib\screens\profile_screen.dart:398:1214 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1214 - expected_token
+  error - The static method or constructor 'dispose' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:1230 - dot_shorthand_undefined_member
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1240 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1240 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1241 - not_a_type
+   info - The local variable '_collegeController' starts with an underscore - lib\screens\profile_screen.dart:398:1246 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_collegeController' isn't used - lib\screens\profile_screen.dart:398:1246 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1246 - expected_token
+  error - The static method or constructor 'dispose' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:1265 - dot_shorthand_undefined_member
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1275 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1275 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1276 - not_a_type
+   info - The local variable '_bioController' starts with an underscore - lib\screens\profile_screen.dart:398:1281 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_bioController' isn't used - lib\screens\profile_screen.dart:398:1281 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1281 - expected_token
+  error - The static method or constructor 'dispose' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:1296 - dot_shorthand_undefined_member
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1306 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1306 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1307 - not_a_type
+   info - The local variable '_experienceController' starts with an underscore - lib\screens\profile_screen.dart:398:1312 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_experienceController' isn't used - lib\screens\profile_screen.dart:398:1312 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1312 - expected_token
+  error - The static method or constructor 'dispose' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:1334 - dot_shorthand_undefined_member
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1344 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1344 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1345 - not_a_type
+   info - The local variable '_tagController' starts with an underscore - lib\screens\profile_screen.dart:398:1350 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_tagController' isn't used - lib\screens\profile_screen.dart:398:1350 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1350 - expected_token
+  error - The static method or constructor 'dispose' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:1365 - dot_shorthand_undefined_member
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1375 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1375 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1376 - not_a_type
+warning - The value of the local variable 'super' isn't used - lib\screens\profile_screen.dart:398:1381 - unused_local_variable
+  error - 'super' can't be used as an identifier because it's a keyword - lib\screens\profile_screen.dart:398:1381 - expected_identifier_but_got_keyword
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1381 - expected_token
+  error - The static method or constructor 'dispose' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:1387 - dot_shorthand_undefined_member
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1397 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1397 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1398 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1402 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1402 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1403 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1404 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1404 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1405 - not_a_type
+   info - The variable name 'Future' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:1408 - non_constant_identifier_names
+warning - The value of the local variable 'Future' isn't used - lib\screens\profile_screen.dart:398:1408 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1408 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1419 - expected_token
+   info - The local variable '_saveChanges' starts with an underscore - lib\screens\profile_screen.dart:398:1421 - no_leading_underscores_for_local_identifiers
+warning - The declaration '_saveChanges' isn't referenced - lib\screens\profile_screen.dart:398:1421 - unused_element
+  error - Expected to find '[' - lib\screens\profile_screen.dart:398:1421 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1443 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1443 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1444 - expected_token
+  error - Undefined name '_isSaving' - lib\screens\profile_screen.dart:398:1453 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1471 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1471 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1472 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1477 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1477 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1478 - expected_token
+  error - The non-nullable local variable '_nameController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:1499 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1527 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1527 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1528 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1555 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1555 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1556 - not_a_type
+   info - The variable name 'ScaffoldMessenger' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:1563 - non_constant_identifier_names
+warning - The value of the local variable 'ScaffoldMessenger' isn't used - lib\screens\profile_screen.dart:398:1563 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1563 - expected_token
+  error - The static method or constructor 'of' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:1581 - dot_shorthand_undefined_member
+  error - Undefined name 'context' - lib\screens\profile_screen.dart:398:1584 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1606 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1607 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1616 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1705 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1706 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1715 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1715 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1716 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1730 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1730 - expected_token
+warning - Dead code - lib\screens\profile_screen.dart:398:1731 - dead_code
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1731 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1737 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1737 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1738 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1739 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1739 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:1740 - not_a_type
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1745 - expected_token
+  error - Undefined name '_isSaving' - lib\screens\profile_screen.dart:398:1760 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1778 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1778 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1779 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1784 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1784 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1785 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1795 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1795 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:1796 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1844 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1845 - expected_token
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1845 - expression_in_map
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1845 - expression_in_map
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1854 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1870 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1871 - expected_token
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1871 - expression_in_map
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1871 - expression_in_map
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1880 - expected_token
+  error - The non-nullable local variable '_collegeController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:1892 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1923 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1924 - expected_token
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1924 - expression_in_map
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1924 - expression_in_map
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1933 - expected_token
+  error - The non-nullable local variable '_bioController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:1940 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1967 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1968 - expected_token
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1968 - expression_in_map
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1968 - expression_in_map
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1977 - expected_token
+  error - The non-nullable local variable '_tags' must be assigned before it can be used - lib\screens\profile_screen.dart:398:1985 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:1991 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:1992 - expected_token
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1992 - expression_in_map
+  error - Expressions can't be used in a map literal - lib\screens\profile_screen.dart:398:1992 - expression_in_map
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2001 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2001 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2002 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2003 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2003 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2004 - expected_token
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:2015 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2046 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2046 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:2047 - not_a_type
+warning - The value of the local variable 'updateData' isn't used - lib\screens\profile_screen.dart:398:2056 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2056 - expected_token
+  error - The matched value of type 'int' isn't assignable to the required type 'List<Object?>' - lib\screens\profile_screen.dart:398:2066 - pattern_type_mismatch_in_irrefutable_context
+  error - Refutable patterns can't be used in an irrefutable context - lib\screens\profile_screen.dart:398:2067 - refutable_pattern_in_irrefutable_context
+  error - The non-nullable local variable '_experienceController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:2103 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2143 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2143 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:2144 - not_a_type
+warning - The value of the local variable 'updateData' isn't used - lib\screens\profile_screen.dart:398:2153 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2153 - expected_token
+  error - The name 'updateData' is already defined - lib\screens\profile_screen.dart:398:2153 - duplicate_definition
+  error - Refutable patterns can't be used in an irrefutable context - lib\screens\profile_screen.dart:398:2164 - refutable_pattern_in_irrefutable_context
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2204 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2204 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2205 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2213 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2213 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2214 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2215 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2215 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:2216 - not_a_type
+warning - The value of the local variable 'await' isn't used - lib\screens\profile_screen.dart:398:2223 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2223 - expected_token
+  error - The keywords 'await' and 'yield' can't be used as identifiers in an asynchronous or generator function - lib\screens\profile_screen.dart:398:2223 - async_keyword_used_as_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2247 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2255 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2255 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2286 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2287 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2287 - expected_token
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:2304 - undefined_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2318 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2319 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2319 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2349 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2350 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2350 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2400 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2400 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2401 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2408 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2408 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2409 - expected_token
+  error - Undefined name 'mounted' - lib\screens\profile_screen.dart:398:2420 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2430 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2430 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:2431 - not_a_type
+   info - The variable name 'Navigator' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:2440 - non_constant_identifier_names
+warning - The value of the local variable 'Navigator' isn't used - lib\screens\profile_screen.dart:398:2440 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2440 - expected_token
+  error - The static method or constructor 'pop' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:2450 - dot_shorthand_undefined_member
+  error - Undefined name 'context' - lib\screens\profile_screen.dart:398:2454 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2463 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2463 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:2464 - not_a_type
+   info - The variable name 'ScaffoldMessenger' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:2473 - non_constant_identifier_names
+warning - The value of the local variable 'ScaffoldMessenger' isn't used - lib\screens\profile_screen.dart:398:2473 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2473 - expected_token
+  error - The static method or constructor 'of' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:2491 - dot_shorthand_undefined_member
+  error - Undefined name 'context' - lib\screens\profile_screen.dart:398:2494 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2516 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:2517 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:2528 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2640 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:2641 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2652 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2652 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2653 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2661 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2661 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2662 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2680 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2680 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2681 - expected_token
+  error - Undefined name 'mounted' - lib\screens\profile_screen.dart:398:2692 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2702 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2702 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:2703 - not_a_type
+   info - The variable name 'ScaffoldMessenger' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:2712 - non_constant_identifier_names
+warning - The value of the local variable 'ScaffoldMessenger' isn't used - lib\screens\profile_screen.dart:398:2712 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2712 - expected_token
+  error - The static method or constructor 'of' isn't defined for the context type '_' - lib\screens\profile_screen.dart:398:2730 - dot_shorthand_undefined_member
+  error - Undefined name 'context' - lib\screens\profile_screen.dart:398:2733 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2755 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:2756 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:2767 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2854 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:2855 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2866 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2866 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2867 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2875 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2875 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2876 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2892 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2892 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2893 - expected_token
+  error - Undefined name 'mounted' - lib\screens\profile_screen.dart:398:2904 - undefined_identifier
+  error - Undefined name '_isSaving' - lib\screens\profile_screen.dart:398:2928 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2947 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2947 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2948 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2954 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2954 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2955 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2959 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2959 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2960 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2961 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2961 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2962 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:2974 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2974 - expected_token
+   info - An uninitialized variable should have an explicit type annotation - lib\screens\profile_screen.dart:398:2975 - prefer_typing_uninitialized_variables
+  error - n isn't a type - lib\screens\profile_screen.dart:398:2975 - not_a_type
+   info - The variable name 'Widget' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:2978 - non_constant_identifier_names
+warning - The value of the local variable 'Widget' isn't used - lib\screens\profile_screen.dart:398:2978 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:2978 - expected_token
+warning - The declaration 'build' isn't referenced - lib\screens\profile_screen.dart:398:2985 - unused_element
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3014 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:3014 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:3015 - expected_token
+  error - Undefined name 'widget' - lib\screens\profile_screen.dart:398:3037 - undefined_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3066 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:3066 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:3067 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3072 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:3072 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:3073 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3101 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3102 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3109 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3155 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3156 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3163 - expected_token
+  error - Local variable 'Container' can't be referenced before it is declared - lib\screens\profile_screen.dart:398:3170 - referenced_before_declaration
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3180 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3181 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3188 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3220 - missing_identifier
+  error - Arguments of a constant creation must be constant expressions - lib\screens\profile_screen.dart:398:3221 - const_with_non_constant_argument
+  error - Arguments of a constant creation must be constant expressions - lib\screens\profile_screen.dart:398:3221 - const_with_non_constant_argument
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3221 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3230 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3255 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3256 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3265 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3327 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3328 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3337 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3338 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3345 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3370 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3371 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3380 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3409 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3410 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3419 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3473 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3474 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3483 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3484 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3491 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3520 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3521 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3530 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3544 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3545 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3556 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3587 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3588 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3599 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3644 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3645 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3656 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3667 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3668 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3681 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3688 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3689 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3704 - expected_token
+  error - Local variable 'Container' can't be referenced before it is declared - lib\screens\profile_screen.dart:398:3711 - referenced_before_declaration
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3721 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3722 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3739 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3749 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3750 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3767 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3777 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3778 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3795 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3821 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3822 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3841 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3863 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3864 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3883 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3922 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3923 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3942 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3943 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3960 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3961 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:3976 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3977 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:3990 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4017 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4018 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4031 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4035 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4036 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4051 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4101 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4102 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4117 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4128 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4129 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4146 - expected_token
+  error - The name 'Text' isn't a class - lib\screens\profile_screen.dart:398:4152 - creation_with_non_type
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4172 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4173 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4194 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4276 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4277 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4294 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4295 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4310 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4311 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4324 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4351 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4352 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4365 - expected_token
+  error - Local variable '_buildSectionHeader' can't be referenced before it is declared - lib\screens\profile_screen.dart:398:4365 - referenced_before_declaration
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4399 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4400 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4413 - expected_token
+  error - Local variable '_buildTextField' can't be referenced before it is declared - lib\screens\profile_screen.dart:398:4413 - referenced_before_declaration
+  error - The non-nullable local variable '_nameController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:4442 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4459 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4460 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4473 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4500 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4501 - expected_token
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4514 - expected_token
+  error - Local variable '_buildTextField' can't be referenced before it is declared - lib\screens\profile_screen.dart:398:4514 - referenced_before_declaration
+  error - The non-nullable local variable '_collegeController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:4548 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4568 - missing_identifier
+  error - Expected to find ',' - lib\screens\profile_screen.dart:398:4569 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4569 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4582 - missing_identifier
+  error - Expected to find ')' - lib\screens\profile_screen.dart:398:4582 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4582 - expected_token
+  error - Expected to find ']' - lib\screens\profile_screen.dart:398:4582 - expected_token
+warning - Dead code - lib\screens\profile_screen.dart:398:4583 - dead_code
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4583 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4621 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4622 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:4622 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4623 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4623 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:4624 - not_a_type
+   info - The local variable '_buildSectionHeader' starts with an underscore - lib\screens\profile_screen.dart:398:4637 - no_leading_underscores_for_local_identifiers
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4637 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4664 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4665 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:4665 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4666 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4666 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:4667 - not_a_type
+   info - The local variable '_buildTextField' starts with an underscore - lib\screens\profile_screen.dart:398:4680 - no_leading_underscores_for_local_identifiers
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4680 - expected_token
+  error - The non-nullable local variable '_bioController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:4703 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4730 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4731 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:4731 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4732 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4732 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4733 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4746 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4746 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4747 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4785 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4786 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:4786 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4787 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4787 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:4788 - not_a_type
+   info - The local variable '_buildSectionHeader' starts with an underscore - lib\screens\profile_screen.dart:398:4801 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_buildSectionHeader' isn't used - lib\screens\profile_screen.dart:398:4801 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4801 - expected_token
+  error - The name '_buildSectionHeader' is already defined - lib\screens\profile_screen.dart:398:4801 - duplicate_definition
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4862 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4863 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:4863 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:4864 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4864 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:4865 - not_a_type
+   info - The variable name 'Text' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:4878 - non_constant_identifier_names
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:4878 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:5021 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:5022 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:5022 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:5023 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:5023 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:5024 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:5062 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:5063 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:5063 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:5064 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:5064 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:5065 - not_a_type
+   info - The variable name 'Container' isn't a lowerCamelCase identifier - lib\screens\profile_screen.dart:398:5078 - non_constant_identifier_names
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:5078 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:5088 - missing_identifier
+  error - Expected to find ')' - lib\screens\profile_screen.dart:398:5089 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8564 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8565 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:8565 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8566 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8566 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8567 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8580 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8580 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8581 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8608 - missing_identifier
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8612 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8612 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8613 - expected_token
+  error - Expected to find ']' - lib\screens\profile_screen.dart:398:8613 - expected_token
+  error - Expected to find ']' - lib\screens\profile_screen.dart:398:8613 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8653 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8654 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:8654 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8655 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8655 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:8656 - not_a_type
+   info - The local variable '_buildSectionHeader' starts with an underscore - lib\screens\profile_screen.dart:398:8671 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_buildSectionHeader' isn't used - lib\screens\profile_screen.dart:398:8671 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8671 - expected_token
+  error - The name '_buildSectionHeader' is already defined - lib\screens\profile_screen.dart:398:8671 - duplicate_definition
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8705 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8706 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:8706 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8707 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8707 - expected_token
+  error - n isn't a type - lib\screens\profile_screen.dart:398:8708 - not_a_type
+   info - The local variable '_buildTextField' starts with an underscore - lib\screens\profile_screen.dart:398:8723 - no_leading_underscores_for_local_identifiers
+warning - The value of the local variable '_buildTextField' isn't used - lib\screens\profile_screen.dart:398:8723 - unused_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8723 - expected_token
+  error - The name '_buildTextField' is already defined - lib\screens\profile_screen.dart:398:8723 - duplicate_definition
+  error - The non-nullable local variable '_experienceController' must be assigned before it can be used - lib\screens\profile_screen.dart:398:8762 - not_assigned_potentially_non_nullable_local_variable
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8835 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8836 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:8836 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8837 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8837 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8838 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8878 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8879 - missing_identifier
+  error - Unexpected text ';' - lib\screens\profile_screen.dart:398:8879 - unexpected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8880 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8880 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8881 - expected_token
+  error - Expected an identifier - lib\screens\profile_screen.dart:398:8896 - missing_identifier
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8896 - expected_token
+  error - Expected to find ';' - lib\screens\profile_screen.dart:398:8897 - expected_token
+  error - Expected to find '}' - lib\screens\profile_screen.dart:398:13441 - expected_token
+   info - The import of 'package:flutter/foundation.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\screens\role_selection_screen.dart:1:8 - unnecessary_import
+  error - The argument for the named parameter 'surface' was already specified - lib\theme\antigravity_theme.dart:43:9 - duplicate_named_argument
+  error - The argument for the named parameter 'surface' was already specified - lib\theme\app_theme.dart:27:9 - duplicate_named_argument
+   info - Don't invoke 'print' in production code - refactor_profile.dart:11:5 - avoid_print
+   info - Use interpolation to compose strings and values - refactor_profile.dart:415:39 - prefer_interpolation_to_compose_strings
+   info - Don't invoke 'print' in production code - refactor_profile.dart:416:3 - avoid_print
+
+754 issues found. (ran in 7.5s)

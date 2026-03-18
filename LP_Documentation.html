@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LP Standard Form - Professional Documentation</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Inter:wght@300;400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <!-- MathJax for high-quality LaTeX rendering -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #3b82f61a;
+            --border: #e2e8f0;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: var(--bg-card);
+            padding: 60px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-weight: 300;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            margin-top: 40px;
+            color: var(--primary-dark);
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            color: #334155;
+        }
+
+        .step-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .problem-section {
+            margin-bottom: 60px;
+        }
+
+        .math-block {
+            background-color: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .note {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 5px 0;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .steps-list li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .steps-list li::before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .standard-form {
+            background-color: #f8fafc;
+            border: 2px solid var(--primary);
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+        }
+
+        .standard-form h3 {
+            margin-top: 0;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.1em;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background 0.2s;
+            z-index: 1000;
+        }
+
+        .print-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            .print-btn { display: none; }
+            body { padding: 0; background: white; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: 100%; padding: 0; }
+            .math-block { border: none; background: none; }
+            .standard-form { break-inside: avoid; }
+            .problem-section { break-inside: avoid; }
+        }
+
+        /* Simplex Specific Styles */
+        .simplex-table {
+            border: 1px solid #cbd5e1;
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 0.8rem;
+        }
+        .simplex-table th {
+            background-color: #334155;
+            color: #f8fafc;
+        }
+        .key-col { background-color: rgba(245, 158, 11, 0.1) !important; border-left: 2px solid #f59e0b; border-right: 2px solid #f59e0b; }
+        .key-row { background-color: rgba(239, 68, 68, 0.05) !important; border-top: 2px solid #ef4444; border-bottom: 2px solid #ef4444; }
+        .key-element { background-color: #f59e0b !important; color: white !important; font-weight: bold; border: 2px solid #d97706; }
+        .transformation-box {
+            background: #f1f5f9;
+            border-left: 4px solid var(--primary);
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-size: 0.85rem;
+        }
+        .iter-header {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .iter-num {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn" onclick="window.print()">Print to PDF</button>
+
+    <div class="container">
+        <header>
+            <h1>Linear Programming Documentation</h1>
+            <div class="subtitle">Standard Form Conversion - Assignment Summary</div>
+        </header>
+
+        <!-- Problem (i) -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM (I)</span>
+            <h2>Optimization Task</h2>
+            <div class="math-block">
+                \[\text{Maximize: } Z = 3x_1 + 2x_2 + 5x_3\]
+            </div>
+            <h3>Initial Constraints</h3>
+            <ul class="steps-list">
+                <li>Constraint 1: \(x_1 + 2x_2 + x_3 \le 430\)</li>
+                <li>Constraint 2: \(3x_1 + 2x_3 \ge 460\)</li>
+                <li>Constraint 3: \(x_1 + 4x_2 \le 420\)</li>
+                <li>Non-negativity: \(x_1, x_2, x_3 \ge 0\)</li>
+            </ul>
+
+            <div class="standard-form">
+                <h3>Converted Standard Form</h3>
+                \[\text{Maximize: } Z = 3x_1 + 2x_2 + 5x_3 + 0s_1 + 0s_2 + 0s_3 - MA_1\]
+                <div class="note">Subject to:</div>
+                \[\begin{aligned}
+                x_1 + 2x_2 + x_3 + s_1 &= 430 \\
+                3x_1 + 2x_3 - s_2 + A_1 &= 460 \\
+                x_1 + 4x_2 + s_3 &= 420 \\
+                \text{Variables: } &x_j, s_i, A_k \ge 0
+                \end{aligned}\]
+            </div>
+        </section>
+
+        <!-- Problem (ii) -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM (II)</span>
+            <h2>Minimization with Unrestricted Variables</h2>
+            <div class="math-block">
+                \[\text{Minimise: } Z = 3x_1 - x_2 + 3x_4\]
+                <div class="note">*(\(x_2\) is unrestricted)*</div>
+            </div>
+            
+            <h3>Conversion Logic</h3>
+            <ul class="steps-list">
+                <li><strong>Unrestricted Variable:</strong> Replace \(x_2\) with \((x_2' - x_2'')\) where \(x_2', x_2'' \ge 0\).</li>
+                <li><strong>Sense:</strong> Convert to Maximize \(Z' = -Z = -3x_1 + (x_2' - x_2'') - 3x_4\).</li>
+                <li><strong>RHS Correction:</strong> Constraint 1 (\(x_1 + 2x_2 + x_3 \le -430\)) multiplied by \(-1\).</li>
+            </ul>
+
+            <div class="standard-form">
+                <h3>Converted Standard Form</h3>
+                \[\text{Maximize: } Z' = -3x_1 + (x_2' - x_2'') - 3x_4 + 0s_1 + 0s_2 + 0s_3\]
+                <div class="note">Subject to:</div>
+                \[\begin{aligned}
+                -x_1 - 2(x_2' - x_2'') - x_3 + s_1 &= 430 \\
+                3x_1 + 2x_3 + s_2 &= 460 \\
+                x_1 + 4(x_2' - x_2'') + s_3 &= 420 \\
+                \text{Variables: } &x_i, s_j \ge 0
+                \end{aligned}\]
+            </div>
+        </section>
+
+        <!-- Problem (iii) -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM (III)</span>
+            <h2>Maximize Complex Constraints</h2>
+            <div class="math-block">
+                \[\text{Maximize: } Z = 2x_1 + 5x_2 + 3x_3\]
+            </div>
+            <h3>Constraints</h3>
+            <ul class="steps-list">
+                <li>\(x_1 + 2x_2 + x_3 \le 430\) (Slack \(s_1\))</li>
+                <li>\(3x_1 + 2x_2 \ge 460\) (Surplus \(s_2\), Artificial \(A_1\))</li>
+                <li>\(x_1 + 4x_2 \le 420\) (Slack \(s_3\))</li>
+            </ul>
+
+            <div class="standard-form">
+                <h3>Converted Standard Form</h3>
+                \[\text{Maximize: } Z = 2x_1 + 5x_2 + 3x_3 + 0s_1 + 0s_2 + 0s_3 - MA_1\]
+                <div class="note">Subject to:</div>
+                \[\begin{aligned}
+                x_1 + 2x_2 + x_3 + s_1 &= 430 \\
+                3x_1 + 2x_3 - s_2 + A_1 &= 460 \\
+                x_1 + 4x_2 + s_3 &= 420 \\
+                \text{Variables: } &x_j, s_j, A_k \ge 0
+                \end{aligned}\]
+            </div>
+        </section>
+
+        <!-- Problem (iv) -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM (IV)</span>
+            <h2>Minimization (Case 2)</h2>
+            <div class="math-block">
+                \[\text{Minimise: } Z = 3x_1 - x_2 + 3x_4\]
+                <div class="note">*(\(x_2\) is unrestricted)*</div>
+            </div>
+
+            <div class="standard-form">
+                <h3>Converted Standard Form</h3>
+                \[\text{Maximize: } Z' = -3x_1 + (x_2' - x_2'') - 3x_4 + 0s_1 + 0s_2 + 0s_3\]
+                <div class="note">Subject to:</div>
+                \[\begin{aligned}
+                -x_1 - 2(x_2' - x_2'') - x_3 + s_1 &= 430 \\
+                3x_1 + 2x_3 + s_2 &= 460 \\
+                x_1 + 4(x_2' - x_2'') + s_3 &= 420 \\
+                \text{Variables: } &x_i, s_j \ge 0
+                \end{aligned}\]
+            </div>
+        </section>
+
+        <!-- PART II: BFS ANALYSIS -->
+        <header style="margin-top: 80px;">
+            <h1>Part II: BFS Analysis</h1>
+            <div class="subtitle">Detailed breakdown of basic and feasible solutions</div>
+        </header>
+
+        <style>
+            .analysis-table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 25px 0;
+                font-size: 0.9rem;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+                border-radius: 8px;
+                overflow: hidden;
+            }
+            .analysis-table th {
+                background-color: var(--primary);
+                color: white;
+                text-align: left;
+                padding: 12px 15px;
+                font-family: 'Montserrat', sans-serif;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.75rem;
+                letter-spacing: 0.05em;
+            }
+            .analysis-table td {
+                padding: 12px 15px;
+                border-bottom: 1px solid var(--border);
+            }
+            .analysis-table tr:last-child td {
+                border-bottom: none;
+            }
+            .analysis-table tr:nth-child(even) {
+                background-color: #f8fafc;
+            }
+            .status-yes { color: #059669; font-weight: 700; }
+            .status-no { color: #dc2626; font-weight: 700; }
+            .optimal-row { background-color: #ecfdf5 !important; border: 2px solid #10b981; }
+        </style>
+
+        <!-- Problem 1 Analysis -->
+        <section class="problem-section">
+            <span class="step-badge">ANALYSIS (I)</span>
+            <h2>Problem 1: Maximization Analysis</h2>
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Non-basic Variables</th>
+                        <th>basic variables</th>
+                        <th>Equations</th>
+                        <th>Value of Basic Variables</th>
+                        <th>Is Solution feasible ?</th>
+                        <th>Is Solution Degenerate?</th>
+                        <th>Value of z</th>
+                        <th>Is Solution Optimal?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\(x_3 = 0\)</td>
+                        <td>(\(x_1, x_2\))</td>
+                        <td>\(x_1 + x_2 = 6\); \(2x_1 + 3x_2 = 8\)</td>
+                        <td>\(x_1=10, x_2=-4\)</td>
+                        <td class="status-no">No</td>
+                        <td>No</td>
+                        <td>4</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_2 = 0\)</td>
+                        <td>(\(x_1, x_3\))</td>
+                        <td>\(x_1 + 2x_3 = 6\); \(2x_1 + x_3 = 8\)</td>
+                        <td>\(x_1=3.33, x_3=1.33\)</td>
+                        <td class="status-yes">Yes</td>
+                        <td>No</td>
+                        <td>8</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr class="optimal-row">
+                        <td>\(x_1 = 0\)</td>
+                        <td>(\(x_2, x_3\))</td>
+                        <td>\(x_2 + 2x_3 = 6\); \(3x_2 + x_3 = 8\)</td>
+                        <td>\(x_2=2, x_3=2\)</td>
+                        <td class="status-yes">Yes</td>
+                        <td>No</td>
+                        <td>10</td>
+                        <td class="status-yes">Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Problem 2 Analysis -->
+        <section class="problem-section">
+            <span class="step-badge">ANALYSIS (II)</span>
+            <h2>Problem 2: Slack & Surplus Analysis</h2>
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Non-basic Variables</th>
+                        <th>basic variables</th>
+                        <th>Equations</th>
+                        <th>Value of Basic Variables</th>
+                        <th>Is Solution feasible ?</th>
+                        <th>Is Solution Degenerate?</th>
+                        <th>Value of z</th>
+                        <th>Is Solution Optimal?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\(x_1, x_2, x_3, x_4\)</td>
+                        <td>(\(s_1, s_2\))</td>
+                        <td>\(s_1=5\); \(s_2=4\)</td>
+                        <td>\(s_1=5, s_2=4\)</td>
+                        <td class="status-yes">Yes</td>
+                        <td>No</td>
+                        <td>0</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr class="optimal-row">
+                        <td>\(x_1, x_2, x_4, s_2\)</td>
+                        <td>(\(x_3, s_1\))</td>
+                        <td>\(2x_3=4\); \(-x_3+s_1=5\)</td>
+                        <td>\(x_3=2, s_1=7\)</td>
+                        <td class="status-yes">Yes</td>
+                        <td>No</td>
+                        <td>10</td>
+                        <td class="status-yes">Yes</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_1, x_2, x_4, s_1\)</td>
+                        <td>(\(x_3, s_2\))</td>
+                        <td>\(-x_3=5\); \(2x_3+s_2=4\)</td>
+                        <td>\(x_3=-5, s_2=14\)</td>
+                        <td class="status-no">No</td>
+                        <td>No</td>
+                        <td>-25</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Problem 3 Analysis -->
+        <section class="problem-section">
+            <span class="step-badge">ANALYSIS (III)</span>
+            <h2>Problem 3: Multiple Decision Variables</h2>
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Non-basic Variables</th>
+                        <th>basic variables</th>
+                        <th>Equations</th>
+                        <th>Value of Basic Variables</th>
+                        <th>Is Solution feasible ?</th>
+                        <th>Is Solution Degenerate?</th>
+                        <th>Value of z</th>
+                        <th>Is Solution Optimal?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\(x_3, x_4 = 0\)</td>
+                        <td>(\(x_1, x_2\))</td>
+                        <td>\(x_1+4x_2=5\); \(3x_1+2x_2=7\)</td>
+                        <td>\(x_1=1.8, x_2=0.8\)</td>
+                        <td class="status-yes">Yes</td>
+                        <td>No</td>
+                        <td>-</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_2, x_4 = 0\)</td>
+                        <td>(\(x_1, x_3\))</td>
+                        <td>\(x_1+2x_3=5\); \(3x_1+4x_3=7\)</td>
+                        <td>\(x_1=-3, x_3=4\)</td>
+                        <td class="status-no">No</td>
+                        <td>No</td>
+                        <td>-</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_2, x_3 = 0\)</td>
+                        <td>(\(x_1, x_4\))</td>
+                        <td>\(x_1+x_4=5\); \(3x_1+5x_4=7\)</td>
+                        <td>\(x_1=9, x_4=-4\)</td>
+                        <td class="status-no">No</td>
+                        <td>No</td>
+                        <td>-</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_1, x_4 = 0\)</td>
+                        <td>(\(x_2, x_3\))</td>
+                        <td>\(4x_2+2x_3=5\); \(2x_2+4x_3=7\)</td>
+                        <td>\(x_2=0.5, x_3=1.5\)</td>
+                        <td class="status-yes">Yes</td>
+                        <td>No</td>
+                        <td>-</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_1, x_3 = 0\)</td>
+                        <td>(\(x_2, x_4\))</td>
+                        <td>\(4x_2+x_4=5\); \(2x_2+5x_4=7\)</td>
+                        <td>\(x_2=1, x_4=1\)</td>
+                        <td class="status-yes">Yes</td>
+                        <td>No</td>
+                        <td>-</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Problem 4 Analysis -->
+        <section class="problem-section">
+            <span class="step-badge">ANALYSIS (IV)</span>
+            <h2>Problem 4: Feasibility Check</h2>
+            <table class="analysis-table">
+                <thead>
+                    <tr>
+                        <th>Non-basic Variables</th>
+                        <th>basic variables</th>
+                        <th>Equations</th>
+                        <th>Value of Basic Variables</th>
+                        <th>Is Solution feasible ?</th>
+                        <th>Is Solution Degenerate?</th>
+                        <th>Value of z</th>
+                        <th>Is Solution Optimal?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>\(x_3 = 0\)</td>
+                        <td>(\(x_1, x_2\))</td>
+                        <td>\(x_1+3x_2=9\); \(2x_1+5x_2=14\)</td>
+                        <td>\(x_1=-3, x_2=4\)</td>
+                        <td class="status-no">No</td>
+                        <td>No</td>
+                        <td>-16</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_2 = 0\)</td>
+                        <td>(\(x_1, x_3\))</td>
+                        <td>\(x_1+x_3=9\); \(2x_1+3x_3=14\)</td>
+                        <td>\(x_1=13, x_3=-4\)</td>
+                        <td class="status-no">No</td>
+                        <td>No</td>
+                        <td>44</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                    <tr>
+                        <td>\(x_1 = 0\)</td>
+                        <td>(\(x_2, x_3\))</td>
+                        <td>\(3x_2+x_3=9\); \(5x_2+3x_3=14\)</td>
+                        <td>\(x_2=3.25, x_3=-0.75\)</td>
+                        <td class="status-no">No</td>
+                        <td>No</td>
+                        <td>-4.75</td>
+                        <td class="status-no">No</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- PART III: SIMPLEX ITERATIONS -->
+        <header style="margin-top: 80px;">
+            <h1>Part III: Detailed Simplex Iterations</h1>
+            <div class="subtitle">Complete step-by-step optimization using the Simplex Tableau method</div>
+        </header>
+
+        <!-- Problem 1: Full Simplex -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM 1</span>
+            <h2>Maximize \(Z = 6x_1 + 4x_2 + x_3\)</h2>
+            
+            <div class="iter-header"><span class="iter-num">Iteration 0</span><span>Initial Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td class="key-col">-6</td><td>-4</td><td>-1</td><td>0</td><td>0</td><td>0</td><td>-</td></tr>
+                    <tr class="key-row"><td>\(s_1\)</td><td class="key-col key-element">2</td><td>1</td><td>1</td><td>1</td><td>0</td><td>12</td><td>12/2=6</td></tr>
+                    <tr><td>\(s_2\)</td><td class="key-col">1</td><td>3</td><td>2</td><td>0</td><td>1</td><td>18</td><td>18/1=18</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Pivot:</strong> \(x_1\) enters, \(s_1\) leaves. Pivot element = 2.<br>
+                <strong>Row Ops:</strong> \(R_1' = R_1/2\); \(R_0' = R_0 + 6R_1'\); \(R_2' = R_2 - R_1'\).
+            </div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 1</span><span>After pivoting on \(x_1\)</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td>0</td><td class="key-col">-1</td><td>2</td><td>3</td><td>0</td><td>36</td><td>-</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td class="key-col">0.5</td><td>0.5</td><td>0.5</td><td>0</td><td>6</td><td>6/0.5=12</td></tr>
+                    <tr class="key-row"><td>\(s_2\)</td><td>0</td><td class="key-col key-element">2.5</td><td>1.5</td><td>-0.5</td><td>1</td><td>12</td><td>12/2.5=4.8</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Pivot:</strong> \(x_2\) enters, \(s_2\) leaves. Pivot element = 2.5.<br>
+                <strong>Row Ops:</strong> \(R_2'' = R_2'/2.5\); \(R_0'' = R_0' + R_2''\); \(R_1'' = R_1' - 0.5R_2''\).
+            </div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 2</span><span>Final Optimal Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="optimal-row"><td>\(Z\)</td><td>0</td><td>0</td><td>2.6</td><td>2.8</td><td>0.4</td><td>40.8</td><td>-</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0</td><td>0.2</td><td>0.6</td><td>-0.2</td><td>3.6</td><td>-</td></tr>
+                    <tr><td>\(x_2\)</td><td>0</td><td>1</td><td>0.6</td><td>-0.2</td><td>0.4</td><td>4.8</td><td>-</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Status:</strong> All \(Z\) coefficients are non-negative. Optimal solution found.<br>
+                <strong>Result:</strong> \(Z=40.8, x_1=3.6, x_2=4.8\).
+            </div>
+        </section>
+
+        <!-- Problem 2 -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM 2</span>
+            <h2>Minimize \(Z = -4x_1 - 2x_2 - x_3\)</h2>
+            <div class="note">Sense: Maximize \(Z' = 4x_1 + 2x_2 + x_3\)</div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 0</span><span>Initial Setup</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z'\)</td><td class="key-col">-4</td><td>-2</td><td>-1</td><td>0</td><td>0</td><td>0</td><td>-</td></tr>
+                    <tr><td>\(s_1\)</td><td class="key-col">1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>6</td><td>6/1=6</td></tr>
+                    <tr class="key-row"><td>\(s_2\)</td><td class="key-col key-element">2</td><td>1</td><td>0</td><td>0</td><td>1</td><td>8</td><td>8/2=4</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Pivot:</strong> \(x_1\) enters, \(s_2\) leaves. \(R_2' = R_2/2\).
+            </div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 1</span><span>First Pivot results</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z'\)</td><td>0</td><td>0</td><td class="key-col">-1</td><td>0</td><td>2</td><td>16</td><td>-</td></tr>
+                    <tr class="key-row"><td>\(s_1\)</td><td>0</td><td>0.5</td><td class="key-col key-element">1</td><td>1</td><td>-0.5</td><td>2</td><td>2/1=2</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0.5</td><td class="key-col">0</td><td>0</td><td>0.5</td><td>4</td><td>-</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Pivot:</strong> \(x_3\) enters, \(s_1\) leaves. Pivot element = 1.
+            </div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 2</span><span>Final Optimal Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="optimal-row"><td>\(Z'\)</td><td>0</td><td>0.5</td><td>0</td><td>1</td><td>1.5</td><td>18</td><td>-</td></tr>
+                    <tr><td>\(x_3\)</td><td>0</td><td>0.5</td><td>1</td><td>1</td><td>-0.5</td><td>2</td><td>-</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0.5</td><td>0</td><td>0</td><td>0.5</td><td>4</td><td>-</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Conclusion:</strong> Optimal \(Z' = 18\). Therefore original \(Z = -18\).
+            </div>
+        </section>
+
+        <!-- Problem 3 -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM 3</span>
+            <h2>Maximize \(Z = 5x_1 + 3x_2 + 2x_3\)</h2>
+            
+            <div class="iter-header"><span class="iter-num">Iteration 0</span><span>Initial Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td class="key-col">-5</td><td>-3</td><td>-2</td><td>0</td><td>0</td><td>0</td><td>-</td></tr>
+                    <tr><td>\(s_1\)</td><td class="key-col">1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>8</td><td>8/1=8</td></tr>
+                    <tr class="key-row"><td>\(s_2\)</td><td class="key-col key-element">3</td><td>2</td><td>1</td><td>0</td><td>1</td><td>15</td><td>15/3=5</td></tr>
+                </tbody>
+            </table>
+
+            <div class="iter-header"><span class="iter-num">Iteration 1</span><span>One more iteration required</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td>0</td><td>0.33</td><td class="key-col">-0.33</td><td>0</td><td>1.67</td><td>25</td><td>-</td></tr>
+                    <tr class="key-row"><td>\(s_1\)</td><td>0</td><td>0.33</td><td class="key-col key-element">0.67</td><td>1</td><td>-0.33</td><td>3</td><td>3/0.67=4.5</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0.67</td><td class="key-col">0.33</td><td>0</td><td>0.33</td><td>5</td><td>5/0.33=15</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Pivot:</strong> \(x_3\) enters, \(s_1\) leaves. Pivot element = 0.67.<br>
+                <strong>Check:</strong> Coefficient of \(x_3\) in \(Z\)-row is -0.33. This indicates the solution can be further improved. **One more iteration required.**
+            </div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 2</span><span>Final Optimal Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="optimal-row"><td>\(Z\)</td><td>0</td><td>0.5</td><td>0</td><td>0.5</td><td>1.5</td><td>26.5</td><td>-</td></tr>
+                    <tr><td>\(x_3\)</td><td>0</td><td>0.5</td><td>1</td><td>1.5</td><td>-0.5</td><td>4.5</td><td>-</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0.5</td><td>0</td><td>-0.5</td><td>0.5</td><td>3.5</td><td>-</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Status:</strong> All coefficients in \(Z\)-row are non-negative. **Mathematically Optimal.**<br>
+                <strong>Optimal Solution:</strong> \(Z=26.5, x_1=3.5, x_3=4.5\).
+            </div>
+        </section>
+
+        <!-- Problem 4 -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM 4 (PRACTICE 2.3)</span>
+            <h2>Problem 4: Maximize \(Z = 5x_1 + 2x_2\)</h2>
+            <div class="note">Cross-checked: Minimum/Optimization Target \(Z=11\)</div>
+            
+            <div class="iter-header"><span class="iter-num">Iteration 0</span><span>Initial Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td class="key-col">-5</td><td>-2</td><td>0</td><td>0</td><td>0</td><td>-</td></tr>
+                    <tr><td>\(s_1\)</td><td class="key-col">1</td><td>1</td><td>1</td><td>0</td><td>4</td><td>4/1=4</td></tr>
+                    <tr class="key-row"><td>\(s_2\)</td><td class="key-col key-element">3</td><td>1</td><td>0</td><td>1</td><td>6</td><td>6/3=2</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Pivot:</strong> \(x_1\) enters, \(s_2\) leaves. \(R_2' = R_2/3\).
+            </div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 1</span><span>One more iteration required</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td>0</td><td class="key-col">-0.33</td><td>0</td><td>1.67</td><td>10</td><td>-</td></tr>
+                    <tr class="key-row"><td>\(s_1\)</td><td>0</td><td class="key-col key-element">0.67</td><td>1</td><td>-0.33</td><td>2</td><td>2/0.67=3</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td class="key-col">0.33</td><td>0</td><td>0.33</td><td>2</td><td>2/0.33=6</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Pivot:</strong> \(x_2\) enters, \(s_1\) leaves. Pivot point found at intersection (1,3).
+            </div>
+
+            <div class="iter-header"><span class="iter-num">Iteration 2</span><span>Final Optimal Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="optimal-row"><td>\(Z\)</td><td>0</td><td>0</td><td>0.5</td><td>1.5</td><td>11</td><td>-</td></tr>
+                    <tr><td>\(x_2\)</td><td>0</td><td>1</td><td>1.5</td><td>-0.5</td><td>3</td><td>-</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0</td><td>-0.5</td><td>0.5</td><td>1</td><td>-</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Result:</strong> Optimal solution found at **\(Z = 11\)**. Variables: \(x_1=1, x_2=3\).
+            </div>
+        </section>
+
+        <!-- Problem 5 -->
+        <section class="problem-section">
+            <span class="step-badge">PROBLEM 5</span>
+            <h2>Maximize \(Z = 8x_1 + 3x_2 + 4x_3\)</h2>
+            <div class="note">Target Optimization: \(Z=56\)</div>
+            
+            <div class="iter-header"><span class="iter-num">Iteration 0</span><span>Initial Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td class="key-col">-8</td><td>-3</td><td>-4</td><td>0</td><td>0</td><td>0</td><td>-</td></tr>
+                    <tr class="key-row"><td>\(s_1\)</td><td class="key-col key-element">2</td><td>1</td><td>0</td><td>1</td><td>0</td><td>10</td><td>10/2=5</td></tr>
+                    <tr><td>\(s_2\)</td><td class="key-col">0</td><td>0</td><td>3</td><td>0</td><td>1</td><td>12</td><td>-</td></tr>
+                </tbody>
+            </table>
+
+            <div class="iter-header"><span class="iter-num">Iteration 1</span><span>One more iteration required</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>\(Z\)</td><td>0</td><td>1</td><td class="key-col">-4</td><td>4</td><td>0</td><td>40</td><td>-</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0.5</td><td class="key-col">0</td><td>0.5</td><td>0</td><td>5</td><td>-</td></tr>
+                    <tr class="key-row"><td>\(s_2\)</td><td>0</td><td>0</td><td class="key-col key-element">3</td><td>0</td><td>1</td><td>12</td><td>12/3=4</td></tr>
+                </tbody>
+            </table>
+
+            <div class="iter-header"><span class="iter-num">Iteration 2</span><span>Final Tableau</span></div>
+            <table class="analysis-table simplex-table">
+                <thead>
+                    <tr>
+                        <th>Basic</th>
+                        <th>\(x_1\)</th>
+                        <th>\(x_2\)</th>
+                        <th>\(x_3\)</th>
+                        <th>\(s_1\)</th>
+                        <th>\(s_2\)</th>
+                        <th>RHS</th>
+                        <th>Ratio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="optimal-row"><td>\(Z\)</td><td>0</td><td>1</td><td>0</td><td>4</td><td>1.33</td><td>56</td><td>-</td></tr>
+                    <tr><td>\(x_1\)</td><td>1</td><td>0.5</td><td>0</td><td>0.5</td><td>0</td><td>5</td><td>-</td></tr>
+                    <tr><td>\(x_3\)</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0.33</td><td>4</td><td>-</td></tr>
+                </tbody>
+            </table>
+            <div class="transformation-box">
+                <strong>Result:</strong> Optimal reaching **\(Z = 56\)**. Variables: \(x_1=5, x_3=4, x_2=0\).
+            </div>
+        </section>
+
+        <footer>
+            Generated on March 17, 2026 • Optimized for PDF Print
+        </footer>
+    </div>
+
+</body>
+</html>

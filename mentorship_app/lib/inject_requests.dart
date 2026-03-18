@@ -6,7 +6,11 @@ import 'package:mentorship_app/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MaterialApp(home: Scaffold(body: Center(child: SeedRunner()))));
+  runApp(
+    const MaterialApp(
+      home: Scaffold(body: Center(child: SeedRunner())),
+    ),
+  );
 }
 
 class SeedRunner extends StatefulWidget {
@@ -17,7 +21,8 @@ class SeedRunner extends StatefulWidget {
 }
 
 class _SeedRunnerState extends State<SeedRunner> {
-  String status = 'Enter your Mentor UID and press button to inject pending requests into Firestore.';
+  String status =
+      'Enter your Mentor UID and press button to inject pending requests into Firestore.';
   final TextEditingController _uidController = TextEditingController();
 
   Future<void> _injectPendingRequests() async {
@@ -30,13 +35,18 @@ class _SeedRunnerState extends State<SeedRunner> {
     setState(() => status = 'Injecting...');
     try {
       final firestore = FirebaseFirestore.instance;
-      
+
       // Fetch the actual user document to get their name
-      final userDoc = await firestore.collection('users').doc(targetMentorId).get();
-      final targetMentorName = userDoc.exists ? (userDoc.data()?['name'] ?? 'Test Mentor') : 'Test Mentor';
+      final userDoc = await firestore
+          .collection('users')
+          .doc(targetMentorId)
+          .get();
+      final targetMentorName = userDoc.exists
+          ? (userDoc.data()?['name'] ?? 'Test Mentor')
+          : 'Test Mentor';
 
       final batch = firestore.batch();
-      
+
       final dummyStudents = [
         {'id': 'dummy_student_1', 'name': 'Alice Smith'},
         {'id': 'dummy_student_2', 'name': 'Bob Jones'},
@@ -48,7 +58,7 @@ class _SeedRunnerState extends State<SeedRunner> {
         batch.set(docRef, {
           'mentorId': targetMentorId,
           'studentId': student['id'],
-          'status': 'pending', 
+          'status': 'pending',
           'createdAt': FieldValue.serverTimestamp(),
           'mentorName': targetMentorName,
           'mentorSubtitle': 'Senior Developer',
@@ -60,7 +70,10 @@ class _SeedRunnerState extends State<SeedRunner> {
       }
 
       await batch.commit();
-      setState(() => status = 'Success! Added 3 pending requests to $targetMentorName (ID: $targetMentorId)');
+      setState(
+        () => status =
+            'Success! Added 3 pending requests to $targetMentorName (ID: $targetMentorId)',
+      );
     } catch (e) {
       setState(() => status = 'Error: $e');
     }
@@ -73,7 +86,11 @@ class _SeedRunnerState extends State<SeedRunner> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(status, textAlign: TextAlign.center, style: const TextStyle(fontSize: 18)),
+          Text(
+            status,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18),
+          ),
           const SizedBox(height: 20),
           TextField(
             controller: _uidController,
@@ -92,4 +109,3 @@ class _SeedRunnerState extends State<SeedRunner> {
     );
   }
 }
-
